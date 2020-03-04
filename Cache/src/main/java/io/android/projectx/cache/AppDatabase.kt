@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import io.android.projectx.cache.features.login.dao.CachedLoginDao
+import io.android.projectx.cache.features.login.model.CachedLogin
 import io.android.projectx.cache.features.recipes.dao.CachedRecipesDao
 import io.android.projectx.cache.features.recipes.dao.ConfigDao
 import io.android.projectx.cache.features.recipes.model.CachedRecipe
@@ -13,13 +15,14 @@ import io.android.projectx.cache.features.restaurants.model.CachedRestaurant
 import javax.inject.Inject
 
 @Database(
-    entities = [CachedRecipe::class,
+    entities = [CachedLogin::class,CachedRecipe::class,
         Config::class,
         CachedRestaurant::class],
     version = 1
 )
 abstract class AppDatabase @Inject constructor() : RoomDatabase() {
 
+    abstract fun cachedLoginDao(): CachedLoginDao
     abstract fun cachedRecipesDao(): CachedRecipesDao
     abstract fun configDao(): ConfigDao
     abstract fun cachedRestaurantDao(): CachedRestaurantDao

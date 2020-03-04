@@ -1,6 +1,6 @@
 package io.android.projectx.domain.test.factory
 
-import io.android.projectx.domain.features.recipes.model.Recipe
+import io.android.projectx.domain.features.login.model.Recipe
 
 object RecipeDataFactory {
 

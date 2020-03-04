@@ -45,7 +45,7 @@ class BrowseRecipesActivityTest {
 
     private fun stubRecipesRepositoryGetRecipes(observable: Observable<List<Recipe>>) {
 /*
-        whenever(TestApplication.appComponent().recipesRepository().getRecipes())
+        whenever(TestApplication.appComponent().recipesRepository().login())
             .thenReturn(observable)
 */
     }

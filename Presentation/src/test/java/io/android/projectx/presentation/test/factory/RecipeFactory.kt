@@ -1,6 +1,6 @@
 package io.android.projectx.presentation.test.factory
 
-import io.android.projectx.domain.features.recipes.model.Recipe
+import io.android.projectx.domain.features.login.model.LoginModel
 import io.android.projectx.presentation.base.model.RecipeView
 
 object RecipeFactory {
@@ -15,8 +15,8 @@ object RecipeFactory {
         )
     }
 
-    fun makeRecipe(): Recipe {
-        return Recipe(
+    fun makeRecipe(): LoginModel {
+        return LoginModel(
             DataFactory.uniqueId(), DataFactory.randomString(),
             DataFactory.randomString(), DataFactory.randomString(),
             DataFactory.randomString(), DataFactory.randomString(),
@@ -33,8 +33,8 @@ object RecipeFactory {
         return recipes
     }
 
-    fun makeRecipeList(count: Int): List<Recipe> {
-        val recipes = mutableListOf<Recipe>()
+    fun makeRecipeList(count: Int): List<LoginModel> {
+        val recipes = mutableListOf<LoginModel>()
         repeat(count) {
             recipes.add(makeRecipe())
         }

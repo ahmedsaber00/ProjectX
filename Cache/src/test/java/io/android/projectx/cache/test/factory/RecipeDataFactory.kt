@@ -1,14 +1,13 @@
 package io.android.projectx.cache.test.factory
 
 import io.android.projectx.cache.extentions.getOffsetDate
-import io.android.projectx.cache.features.recipes.model.CachedRecipe
-import io.android.projectx.cache.test.factory.DataFactory
+import io.android.projectx.cache.features.login.model.CachedLogin
 import io.android.projectx.data.features.recipes.model.RecipeEntity
 
 object RecipeDataFactory {
 
-    fun makeCachedRecipe(): CachedRecipe {
-        return CachedRecipe(
+    fun makeCachedRecipe(): CachedLogin {
+        return CachedLogin(
             DataFactory.uniqueId(),
             DataFactory.randomString(),
             DataFactory.randomString(),
@@ -21,8 +20,8 @@ object RecipeDataFactory {
         )
     }
 
-    fun makeBookmarkedCachedRecipe(): CachedRecipe {
-        return CachedRecipe(
+    fun makeBookmarkedCachedRecipe(): CachedLogin {
+        return CachedLogin(
             DataFactory.uniqueId(),
             DataFactory.randomString(),
             DataFactory.randomString(),

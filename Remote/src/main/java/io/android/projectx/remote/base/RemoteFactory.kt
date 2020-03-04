@@ -24,6 +24,7 @@ object RemoteFactory {
     internal fun makeOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) =
         OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(HeaderInterceptor())
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .build()

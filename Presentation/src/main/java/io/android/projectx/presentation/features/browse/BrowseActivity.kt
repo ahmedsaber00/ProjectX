@@ -1,5 +1,7 @@
 package io.android.projectx.presentation.features.browse
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -25,6 +27,12 @@ class BrowseActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     private lateinit var browseViewModel: BrowseRecipesViewModel
+
+    companion object {
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, BrowseActivity::class.java)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +78,6 @@ class BrowseActivity : AppCompatActivity() {
             }
             ResourceState.LOADING -> {
                 progressView.visibility = View.VISIBLE
-                recyclerRecipes.visibility = View.GONE
             }
             ResourceState.ERROR -> {
             }

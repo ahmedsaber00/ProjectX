@@ -124,6 +124,8 @@ ext {
     ]
 
     presentationDependencies = [
+            navigationFragmentKotlin      : "androidx.navigation:navigation-fragment-ktx:$ktxVersion",
+            navigationUiKotlin    : "androidx.navigation:navigation-ui-ktx:$ktxVersion",
             javaxAnnotation       : "javax.annotation:javax.annotation-api:${javaxAnnotationVersion}",
             javaxInject           : "javax.inject:javax.inject:${javaxInjectVersion}",
             rxKotlin              : "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",

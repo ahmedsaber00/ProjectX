@@ -6,7 +6,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-import io.android.projectx.domain.features.recipes.model.Recipe
+import io.android.projectx.domain.features.login.model.Recipe
 import io.android.projectx.presentation.R
 import io.android.projectx.presentation.test.factory.RecipeDataFactory
 import io.reactivex.Observable
@@ -50,7 +50,7 @@ class BrowseBookmarkedRecipesActivityTest {
     }
 
     private fun stubRecipesRepositoryGetBookmarkedRecipes(observable: Observable<List<Recipe>>) {
-        /*whenever(TestApplication.appComponent().recipesRepository().getBookmarkedRecipes())
+        /*whenever(TestApplication.appComponent().recipesRepository().getBookmarkedLogin())
             .thenReturn(observable)*/
     }
 

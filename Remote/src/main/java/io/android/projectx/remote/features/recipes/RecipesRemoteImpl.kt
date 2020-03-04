@@ -13,7 +13,6 @@ class RecipesRemoteImpl @Inject constructor(
 ) : RecipesRemote {
 
     override fun getRecipes(): Flowable<List<RecipeEntity>> {
-        //todo - move parameters
         return service.searchRecipes(1)
             .map {
                 it.items.map { model -> mapper.mapFromModel(model) }

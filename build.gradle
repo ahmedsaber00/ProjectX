@@ -11,7 +11,8 @@ buildscript {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def gradle_local_version = properties.getProperty('gradle.local.version')
-        gradle_version = gradle_local_version
+        if(gradle_local_version!=null)
+            gradle_version = gradle_local_version
     }
 
     repositories {
@@ -22,7 +23,8 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // NOTE: Do not place your application dependencies here; they belong
+        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0'
+// NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
@@ -31,7 +33,8 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        maven { url 'https://jitpack.io' }
+
     }
 }
 

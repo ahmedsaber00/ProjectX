@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvForgetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
+        android:text="Verification"
+        android:textColor="@color/dark_gray"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivImg"
+        android:layout_width="100dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="123dp"
+        android:src="@drawable/ptt_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="Enter the verification code that we just sent it to you on your mobile number"
+        android:textColor="@color/dark_gray"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivImg" />
+
+    <com.mukesh.OtpView
+        android:id="@+id/otp_view"
+        style="@style/OtpWidget.OtpView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:focusableInTouchMode="true"
+        android:inputType="number"
+        android:textColor="@color/dark_gray"
+        app:itemCount="4"
+        app:itemRadius="2dp"
+        app:itemSpacing="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView9"
+        app:lineColor="@color/normal_gray"
+        app:lineWidth="1dp"
+        app:viewType="rectangle" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="If you didn’t receive a code !"
+        android:textColor="@color/dark_gray"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otp_view" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Resend"
+        android:textColor="@color/colorAccent"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/appCompatTextView10"
+        app:layout_constraintTop_toBottomOf="@+id/otp_view" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buLogin"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_button_rounded"
+        android:text="Verify"
+        android:textColor="#fff"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView12" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivAfaqyLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_afaqy_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPoweredby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_afaqy_logo"
+        android:text="@string/powered_by"
+        android:textColor="#2E2E2E"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivAfaqyLogo"
+        app:layout_constraintEnd_toStartOf="@+id/ivAfaqyLogo"
+        app:layout_constraintTop_toTopOf="@+id/ivAfaqyLogo" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

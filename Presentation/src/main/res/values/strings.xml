@@ -12,4 +12,5 @@
     <string name="login">Login</string>
     <string name="Please_enter_username">Please enter username</string>
     <string name="Please_enter_password">Please enter password</string>
+    <string name="get_code">Get Code</string>
 </resources>

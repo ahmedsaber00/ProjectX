@@ -14,12 +14,12 @@ class LoginDataRepository @Inject constructor(
     private val factory: LoginDataStoreFactory
 ) : LoginRepository {
 
-    override fun login(username: String, password: String, imei: String): Observable<LoginModel> {
-        return factory.getDataStore(true, true).login(username, password, imei)
-            .toObservable().distinctUntilChanged().flatMap { recipes ->
+    override fun login(username: String, password: String, imei: String, simSerial: String): Observable<LoginModel> {
+        return factory.getDataStore(true, true).login(username, password, imei, simSerial)
+            .toObservable().distinctUntilChanged().flatMap { user ->
                 factory.getCacheDataStore()
-                    .saveLogin(recipes)
-                    .andThen(Observable.just(recipes))
+                    .saveLogin(user)
+                    .andThen(Observable.just(user))
             }
             .map {
                 mapper.mapFromEntity(it)

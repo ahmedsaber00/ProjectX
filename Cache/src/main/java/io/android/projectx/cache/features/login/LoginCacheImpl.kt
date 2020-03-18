@@ -11,18 +11,19 @@ import javax.inject.Inject
 
 class LoginCacheImpl @Inject constructor(
     private val appDatabase: AppDatabase,
+    private val caschedLoginMapper: CachedLoginMapper,
     private val mapper: CachedLoginMapper
 ) : LoginCache {
     override fun login(): Flowable<LoginEntity> {
         return appDatabase.cachedLoginDao().getLogin().map {
-            mapper.mapFromCached(it)
+            caschedLoginMapper.mapFromCached(it)
         }
     }
 
     override fun setLastCacheTime(lastCache: Long): Completable {
         return Completable.defer {
             appDatabase.cachedLoginDao().insertLogin(
-                mapper.mapToCached(LoginEntity("")) )
+                caschedLoginMapper.mapToCached(LoginEntity("")) )
             Completable.complete()
         }
     }
@@ -37,7 +38,7 @@ class LoginCacheImpl @Inject constructor(
     override fun saveLogin(login: LoginEntity): Completable {
         return Completable.defer {
             appDatabase.cachedLoginDao().insertLogin(
-                 mapper.mapToCached(login) )
+                 caschedLoginMapper.mapToCached(login) )
             Completable.complete()
         }
     }

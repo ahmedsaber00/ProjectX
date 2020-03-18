@@ -3,6 +3,7 @@ package io.android.projectx.presentation.features.login
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.telephony.TelephonyManager
@@ -19,13 +20,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import io.android.projectx.presentation.R
+import io.android.projectx.presentation.base.PreferenceControl
 import io.android.projectx.presentation.base.model.LoginView
 import io.android.projectx.presentation.base.state.Resource
 import io.android.projectx.presentation.base.state.ResourceState
 import io.android.projectx.presentation.di.ViewModelProviderFactory
-import io.android.projectx.presentation.features.MainActivity
+import io.android.projectx.presentation.features.channels.ChannelsActivity
 import kotlinx.android.synthetic.main.fragment_login.*
+import java.io.OutputStream
+import java.net.Socket
 import javax.inject.Inject
+
 
 /**
  * A simple [Fragment] subclass.
@@ -39,6 +44,7 @@ class LoginFragment : DaggerFragment() {
 
     lateinit var telMgr: TelephonyManager
     var deviceId = ""
+    var simSerial = ""
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
@@ -105,10 +111,11 @@ class LoginFragment : DaggerFragment() {
                             deviceId = "" // default!!!
                         }
                     }
-
+                    // simSerial = telMgr.simSerialNumber
+                    simSerial = "123456789"
                     loginViewModel.fetchLogin(
                         login_et_username.text.toString(),
-                        login_et_password.text.toString(), deviceId
+                        login_et_password.text.toString(), deviceId, simSerial
                     )
                 }
             }
@@ -136,13 +143,38 @@ class LoginFragment : DaggerFragment() {
         }
     }
 
-    private fun setupScreenForSuccess(recipes: LoginView?) {
+    private fun setupScreenForSuccess(loginView: LoginView?) {
         activity?.finish()
         progressView.visibility = View.GONE
-        recipes?.let {
-            startActivity(MainActivity.getStartIntent(requireContext()))
+        loginView?.let {
+            PreferenceControl.saveData(requireContext(), "Bearer " + loginView.accessToken)
+            startActivity(ChannelsActivity.getStartIntent(requireContext()))
         } ?: run {
 
+        }
+    }
+
+    class SomeTask() : AsyncTask<Void, Void, String>() {
+        override fun doInBackground(vararg params: Void?): String? {
+            val socket = Socket("192.168.1.191", 1232)
+            val bytes = ByteArray(10)
+            bytes[1] = 5
+            val outputStream: OutputStream = socket.getOutputStream()
+            outputStream.write(bytes)
+            outputStream.flush()
+            outputStream.close()
+            socket.close()
+            return "done"
+        }
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            // ...
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            // ...
         }
     }
 

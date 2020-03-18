@@ -4,6 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="com.nitin.pluralchat.MESSAGE_USER" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".base.BaseApplication"
@@ -13,21 +20,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".features.MainActivity"
+        <service
+            android:name=".features.channels.AudioStreamingService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".features.channels.ChannelsActivity"
             android:windowSoftInputMode="adjustPan"
-            ></activity>
+            >
+        </activity>
         <activity android:name=".features.profile.ProfileActivity" />
         <activity android:name=".features.login.LoginActivity" />
         <activity
             android:name=".features.splash.SplashActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/AppTheme.NoActionBar"><intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+           </activity>
         <activity
             android:name=".features.browse.BrowseActivity"
             android:label="@string/app_name" />

@@ -1,7 +1,8 @@
 package io.android.projectx.remote.features.login.service
 
-import io.android.projectx.remote.features.login.model.response.ForgetPasswordResponseModel
+import io.android.projectx.remote.base.response.BaseResponseModel
 import io.android.projectx.remote.features.login.model.response.LoginResponseModel
+import io.android.projectx.remote.features.login.model.response.SendCodeResponseModel
 import io.reactivex.Flowable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -12,11 +13,24 @@ interface LoginService {
     @POST("login")
     fun login(@Field("username") username: String,
         @Field("password") password: String,
-        @Field("imei") imei: String): Flowable<LoginResponseModel>
+        @Field("imei") imei: String,
+        @Field("simSerial") simSerial: String): Flowable<LoginResponseModel>
+
+    @FormUrlEncoded
+    @POST("password/email")
+    fun getVerificationCode(@Field("email") simSerial: String): Flowable<BaseResponseModel>
+
+    @FormUrlEncoded
+    @POST("password/verify")
+    fun sendVerification(@Field("code") token: String,
+                      @Field("simSerial") simSerial: String): Flowable<SendCodeResponseModel>
 
 
     @FormUrlEncoded
-    @POST("password/phone")
-    fun forgetPassword(@Field("countryCode") username: String,
-              @Field("mobile") password: String): Flowable<ForgetPasswordResponseModel>
+    @POST("password/reset")
+    fun resetPassword(@Field("token") token: String,
+                      @Field("simSerial") simSerial: String,
+                      @Field("password") password : String,
+                      @Field("password_confirmation") password_confirmation : String): Flowable<BaseResponseModel>
+
 }

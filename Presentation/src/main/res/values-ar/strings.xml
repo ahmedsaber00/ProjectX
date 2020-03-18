@@ -12,4 +12,5 @@
     <string name="login">تسجيل الدخول</string>
     <string name="Please_enter_username">برجاء ادخال اسم المستخدم</string>
     <string name="Please_enter_password">برجاء ادخال كلمة المرور</string>
+    <string name="get_code">Get Code</string>
 </resources>

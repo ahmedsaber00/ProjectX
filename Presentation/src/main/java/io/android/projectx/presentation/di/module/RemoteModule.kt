@@ -3,12 +3,15 @@ package io.android.projectx.presentation.di.module
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import io.android.projectx.data.features.channels.repository.ChannelsRemote
 import io.android.projectx.data.features.login.repository.LoginRemote
 import io.android.projectx.data.features.recipes.repository.RecipesRemote
 import io.android.projectx.data.features.restaurants.repository.RestaurantsRemote
 import io.android.projectx.presentation.BuildConfig
 import io.android.projectx.remote.features.recipes.RecipesRemoteImpl
 import io.android.projectx.remote.features.RemoteServiceFactory
+import io.android.projectx.remote.features.channels.ChannelsRemoteImpl
+import io.android.projectx.remote.features.channels.service.ChannelsService
 import io.android.projectx.remote.features.login.LoginRemoteImpl
 import io.android.projectx.remote.features.login.service.LoginService
 import io.android.projectx.remote.features.recipes.service.RecipesService
@@ -44,6 +47,12 @@ abstract class  RemoteModule {
         fun provideRestaurantsService(remoteServiceFactory: RemoteServiceFactory): RestaurantsService {
             return remoteServiceFactory.restaurantsService
         }
+
+        @Provides
+        @JvmStatic
+        fun provideChannelsService(remoteServiceFactory: RemoteServiceFactory): ChannelsService {
+            return remoteServiceFactory.channelsService
+        }
     }
 
     @Binds
@@ -54,4 +63,7 @@ abstract class  RemoteModule {
 
     @Binds
     abstract fun bindRestaurantsRemote(restaurantsRemote: RestaurantsRemoteImpl): RestaurantsRemote
+
+    @Binds
+    abstract fun bindChannelsRemote(channelsRemote: ChannelsRemoteImpl): ChannelsRemote
 }

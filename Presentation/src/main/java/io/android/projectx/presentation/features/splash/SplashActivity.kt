@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import io.android.projectx.presentation.R
-import io.android.projectx.presentation.features.MainActivity
-import io.android.projectx.presentation.features.browse.BrowseActivity
+import io.android.projectx.presentation.base.PreferenceControl
+import io.android.projectx.presentation.features.channels.ChannelsActivity
 import io.android.projectx.presentation.features.login.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
@@ -17,8 +17,12 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed(
             {
                 finish()
-                startActivity(LoginActivity.getStartIntent(this))
-            }, 3000
+                if (PreferenceControl.loadData(this).equals(""))
+                    startActivity(LoginActivity.getStartIntent(this))
+                else
+                    startActivity(ChannelsActivity.getStartIntent(this))
+
+            }, 1000
         )
 
     }

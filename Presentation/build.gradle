@@ -153,6 +153,7 @@ dependencies {
     androidTestImplementation presentationTestDependencies.espressoIntents
     androidTestImplementation presentationTestDependencies.espressoContrib
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
 
     //country picker

@@ -1,21 +1,26 @@
 package io.android.projectx.presentation.features.login
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import io.android.projectx.presentation.R
-import io.android.projectx.presentation.base.model.LoginView
+import io.android.projectx.presentation.base.model.ForgetPasswordView
 import io.android.projectx.presentation.base.state.Resource
 import io.android.projectx.presentation.base.state.ResourceState
 import io.android.projectx.presentation.di.ViewModelProviderFactory
-import io.android.projectx.presentation.features.MainActivity
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 import javax.inject.Inject
 
@@ -33,6 +38,8 @@ class ForgetPasswordFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     private lateinit var loginViewModel: LoginViewModel
+    var simSerial = ""
+    lateinit var telMgr: TelephonyManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,17 +54,35 @@ class ForgetPasswordFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginViewModel.login().observe(this,
-            Observer<Resource<LoginView>> { it?.let { handleDataState(it) } })
+        loginViewModel.getVerificationCode().observe(this,
+            Observer<Resource<ForgetPasswordView>> { it?.let { handleDataState(it) } })
 
 
-        buSend.setOnClickListener {
-            val action =
-                ForgetPasswordFragmentDirections.actionForgetPasswordToVerify()
-            findNavController().navigate(action)
+        buGetCode.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_PHONE_STATE
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                // We do not have this permission. Let's ask the user
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.READ_PHONE_STATE),
+                    100
+                )
+
+            } else {
+                telMgr =
+                    requireActivity().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+
+                 simSerial = telMgr.simSerialNumber
+                loginViewModel.fetchVerificationCode("a@a.a")
+            }
         }
     }
-    private fun handleDataState(resource: Resource<LoginView>) {
+
+    private fun handleDataState(resource: Resource<ForgetPasswordView>) {
         when (resource.status) {
             ResourceState.SUCCESS -> {
                 setupScreenForSuccess(resource.data)
@@ -72,14 +97,12 @@ class ForgetPasswordFragment : DaggerFragment() {
         }
     }
 
-    private fun setupScreenForSuccess(recipes: LoginView?) {
-        activity?.finish()
+    private fun setupScreenForSuccess(response: ForgetPasswordView?) {
         progressView.visibility = View.GONE
-        recipes?.let {
-            startActivity(MainActivity.getStartIntent(requireContext()))
-        } ?: run {
-
-        }
+        Toast.makeText(requireContext(), response?.message, Toast.LENGTH_LONG).show()
+        val action =
+            ForgetPasswordFragmentDirections.actionForgetPasswordToVerify()
+        findNavController().navigate(action)
     }
 
 }

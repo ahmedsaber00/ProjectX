@@ -4,9 +4,11 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import io.android.projectx.presentation.di.module.viewmodel.BookmarkedViewModelModule
 import io.android.projectx.presentation.di.module.viewmodel.BrowseViewModelModule
+import io.android.projectx.presentation.di.module.viewmodel.ChannelsViewModelModule
 import io.android.projectx.presentation.di.module.viewmodel.RestaurantsViewModelModule
 import io.android.projectx.presentation.features.bookmarked.BookmarkedActivity
 import io.android.projectx.presentation.features.browse.BrowseActivity
+import io.android.projectx.presentation.features.channels.ChannelsActivity
 import io.android.projectx.presentation.features.restaurants.RestaurantsActivity
 
 @Module
@@ -20,5 +22,8 @@ abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(modules = [RestaurantsViewModelModule::class])
     abstract fun contributesRestaurantsActivity(): RestaurantsActivity
+
+    @ContributesAndroidInjector(modules = [ChannelsViewModelModule::class])
+    abstract fun contributesChannelsActivity(): ChannelsActivity
 
 }

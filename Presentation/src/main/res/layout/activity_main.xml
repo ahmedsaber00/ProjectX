@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context=".features.MainActivity">
+    tools:context=".features.channels.ChannelsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -85,6 +85,7 @@
             app:layout_constraintTop_toBottomOf="@+id/etSearch" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerChannels"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -109,16 +110,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blueConst" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/bg_mic_rounded"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_radio"
+    <com.skyfishjy.library.RippleBackground
+        android:id="@+id/rippleBackground"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/tvPoweredby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSelectedChannels" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSelectedChannels"
+        app:rb_color="@color/colorAccent"
+        app:rb_duration="1500"
+        app:rb_radius="100dp"
+        app:rb_rippleAmount="3"
+        app:rb_scale="1.5">
+
+        <ImageView
+            android:background="@drawable/bg_mic_rounded"
+            android:id="@+id/ivMic"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_radio" />
+    </com.skyfishjy.library.RippleBackground>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivAfaqyLogo"
@@ -144,5 +158,13 @@
         app:layout_constraintEnd_toStartOf="@+id/ivAfaqyLogo"
         app:layout_constraintTop_toTopOf="@+id/ivAfaqyLogo" />
 
-
+    <ProgressBar
+        android:id="@+id/progressView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

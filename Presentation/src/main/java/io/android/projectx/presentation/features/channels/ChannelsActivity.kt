@@ -1,12 +1,16 @@
 package io.android.projectx.presentation.features.channels
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +21,7 @@ import io.android.projectx.presentation.base.model.ChannelsView
 import io.android.projectx.presentation.base.state.Resource
 import io.android.projectx.presentation.base.state.ResourceState
 import io.android.projectx.presentation.di.ViewModelProviderFactory
+import io.android.projectx.presentation.features.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.net.InetSocketAddress
@@ -56,22 +61,27 @@ class ChannelsActivity : AppCompatActivity() {
         channelsViewModel.getChannels().observe(this,
             Observer<Resource<List<ChannelsView>>> { it?.let { handleDataState(it) } })
 
-        channelsViewModel.fetchChannels(PreferenceControl.loadData(this),0)
+        channelsViewModel.fetchChannels(PreferenceControl.loadData(this), 0)
 
-        var client =  ClientClass()
+        var client = ClientClass()
         client.start()
-        startService(Intent(applicationContext, AudioStreamingService::class.java))
+        stopService(Intent(applicationContext, AudioStreamingService::class.java))
+        startForegroundService(Intent(applicationContext, AudioStreamingService::class.java))
 
         ivMic.setOnTouchListener { view, motionEvent ->
-            val action = motionEvent.actionMasked
-            when (action) {
-                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP -> {
-                    pushToTalk()
-                    return@setOnTouchListener true
+            if (checkForMicPermission()) {
+                val action = motionEvent.actionMasked
+                when (action) {
+                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP -> {
+                        pushToTalk()
+                        return@setOnTouchListener true
+                    }
+                    else -> return@setOnTouchListener false
                 }
-                else -> return@setOnTouchListener false
             }
+            return@setOnTouchListener false
         }
+        checkForMicPermission()
     }
 
     private fun setupBrowseRecycler() {
@@ -92,10 +102,16 @@ class ChannelsActivity : AppCompatActivity() {
                 progressView.visibility = View.VISIBLE
             }
             ResourceState.ERROR -> {
+                progressView.visibility = View.GONE
+                if (resource.message.equals("HTTP 401 Unauthorized")) {
+                    PreferenceControl.saveData(this, "")
+                    finish()
+                    startActivity(LoginActivity.getStartIntent(this))
+                }
+
             }
         }
     }
-
 
     private fun setupScreenForSuccess(channels: List<ChannelsView>?) {
         progressView.visibility = View.GONE
@@ -112,7 +128,7 @@ class ChannelsActivity : AppCompatActivity() {
     private fun pushToTalk() {
         if (!isTalking) { // stream audio
             isTalking = true
-            if (micRecorder==null)
+            if (micRecorder == null)
                 micRecorder = MicRecorder()
             t = Thread(micRecorder)
             if (micRecorder != null) {
@@ -149,25 +165,25 @@ class ChannelsActivity : AppCompatActivity() {
 
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        if (event.keyCode == 1015&&isTalking) {//xcoverkey
+        if (event.keyCode == 1015 && isTalking) {//xcoverkey
             if (micRecorder != null) {
                 MicRecorder.keepRecording = false
             }
-            if (ivMic!=null)
+            if (ivMic != null)
                 ivMic.setBackgroundResource(R.drawable.bg_mic_rounded)
             // stop animation
             rippleBackground.clearAnimation();
             rippleBackground.stopRippleAnimation();
             isTalking = false
-        }else if (event.keyCode == 4) {//back key
-        onBackPressed()
+        } else if (event.keyCode == 4) {//back key
+            onBackPressed()
         }
         return true
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (event.keyCode == 1015&&!isTalking) { // stream audio
-            if (micRecorder==null)
+        if (event.keyCode == 1015 && !isTalking) { // stream audio
+            if (micRecorder == null)
                 micRecorder = MicRecorder()
             t = Thread(micRecorder)
             if (micRecorder != null) {
@@ -190,7 +206,7 @@ class ChannelsActivity : AppCompatActivity() {
                     ServerSocket(1232)//port
                 socket = serverSocket!!.accept()
                 SocketHandler.setSocket(socket)
-              //  startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
+                //  startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -204,14 +220,15 @@ class ChannelsActivity : AppCompatActivity() {
             try {
                 socket.connect(
                     InetSocketAddress(
-                        "192.168.1.9",
-                1232//port
+                        "192.168.1.12",
+                        1232//port
                     ), 500
                 )
                 SocketHandler.setSocket(socket)
-               // startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
+                // startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
             } catch (e: IOException) {
                 e.printStackTrace()
+                ClientClass().start()
             }
         }
 
@@ -223,10 +240,27 @@ class ChannelsActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        for (i in 0..channelsList.size-1) {
+        for (i in 0..channelsList.size - 1) {
             channelsList[i].isSelected = false
         }
         channelsAdapter.channels = channelsList
         channelsAdapter.notifyDataSetChanged()
     }
+
+    fun checkForMicPermission(): Boolean {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // We do not have this permission. Let's ask the user
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.RECORD_AUDIO),
+                100
+            )
+            return false
+        } else {
+            return true
+        }
+    }
+
 }

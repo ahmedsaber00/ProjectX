@@ -9,7 +9,7 @@ ext {
 
     //Android
     androidBuildToolsVersion = "29.0.2"
-    androidMinSdkVersion = 23
+    androidMinSdkVersion = 26
     androidTargetSdkVersion = 29
     androidCompileSdkVersion = 29
 

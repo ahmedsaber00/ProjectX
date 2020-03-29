@@ -34,7 +34,7 @@
                 android:layout_gravity="center"
                 android:text="Profile"
                 android:textColor="#fff"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -44,12 +44,14 @@
                 android:layout_margin="8dp"
                 android:drawableStart="@drawable/ic_logout"
                 android:drawablePadding="8dp"
+                android:textSize="10sp"
                 android:gravity="center_vertical"
                 android:scaleType="centerInside"
                 android:text="Logout"
                 android:textColor="#fff" />
 
             <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ibEditProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -63,7 +65,7 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/blue"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
@@ -81,10 +83,10 @@
         android:id="@+id/appCompatTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
         android:text="Username"
-        android:textColor="#19335F"
-        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
 
@@ -93,8 +95,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:textColor="@color/transparent_text_color"
         android:text="mennaanwer"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView" />
@@ -113,18 +116,19 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Mail address"
-        android:textColor="#19335F"
-        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
+        android:textColor="@color/transparent_text_color"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="menna.anwer@gmail.com"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView2" />
@@ -143,19 +147,20 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Password"
-        android:textColor="#19335F"
-        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPassword"
         android:layout_width="wrap_content"
+        android:textColor="@color/transparent_text_color"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:inputType="textPassword"
         android:text="0123456789"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView3" />
@@ -174,18 +179,19 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Phone no."
-        android:textColor="#19335F"
-        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView3" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPhone"
         android:layout_width="wrap_content"
+        android:textColor="@color/transparent_text_color"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="0123456789"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView4" />
@@ -204,18 +210,19 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="SSN"
-        android:textColor="#19335F"
-        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView4" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvSsn"
         android:layout_width="wrap_content"
+        android:textColor="@color/transparent_text_color"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:text="389439804-3094-3994945"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView5" />
@@ -234,8 +241,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Address"
-        android:textColor="#19335F"
-        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView5" />
 
@@ -243,10 +250,11 @@
         android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="200dp"
+        android:maxWidth="250dp"
+        android:textColor="@color/transparent_text_color"
         android:layout_marginEnd="16dp"
         android:text="13st Ahmed el Shazly, Gada, Saudi Arabia"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView6" />
@@ -265,8 +273,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Gender"
-        android:textColor="#19335F"
-        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView6" />
 
@@ -275,8 +283,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:textColor="@color/transparent_text_color"
         android:text="Female"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView7" />
@@ -295,8 +304,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Language"
-        android:textColor="#19335F"
-        android:textSize="16sp"
+        android:textColor="@color/main_text_color"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView7" />
 
@@ -304,9 +313,10 @@
         android:id="@+id/tvLanguage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/transparent_text_color"
         android:layout_marginEnd="16dp"
         android:text="English"
-        android:textSize="16sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appCompatTextView8" />
@@ -327,11 +337,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:gravity="center"
         android:layout_marginTop="100dp"
         android:src="@drawable/ic_afaqy_logo"
         android:text="Powered by"
-        android:textColor="#2E2E2E"
-        android:textSize="14sp"
+        android:textColor="#2e2e2e"
+        android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="@+id/ivAfaqyLogo"
         app:layout_constraintEnd_toStartOf="@+id/ivAfaqyLogo"
         app:layout_constraintTop_toTopOf="@+id/ivAfaqyLogo" />

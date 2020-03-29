@@ -8,4 +8,6 @@
     <color name="normal_gray">#707070</color>
     <color name="dark_gray">#2e2e2e</color>
     <color name="c_white">#fff</color>
+    <color name="transparent_text_color">#8019335f</color>
+    <color name="main_text_color">#19335F</color>
 </resources>

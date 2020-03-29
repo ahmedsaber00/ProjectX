@@ -13,4 +13,7 @@
     <string name="Please_enter_username">Please enter username</string>
     <string name="Please_enter_password">Please enter password</string>
     <string name="get_code">Get Code</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="email">Email</string>
+    <string name="phone_no">Phone no.</string>
 </resources>

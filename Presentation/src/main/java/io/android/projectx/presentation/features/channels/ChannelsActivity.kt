@@ -22,6 +22,7 @@ import io.android.projectx.presentation.base.state.Resource
 import io.android.projectx.presentation.base.state.ResourceState
 import io.android.projectx.presentation.di.ViewModelProviderFactory
 import io.android.projectx.presentation.features.login.LoginActivity
+import io.android.projectx.presentation.features.profile.ProfileActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.net.InetSocketAddress
@@ -80,6 +81,10 @@ class ChannelsActivity : AppCompatActivity() {
                 }
             }
             return@setOnTouchListener false
+        }
+
+        ibProfile.setOnClickListener {
+            startActivity(ProfileActivity.getStartIntent(this))
         }
         checkForMicPermission()
     }

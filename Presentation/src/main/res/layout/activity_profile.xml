@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Profile"
+                android:text="@string/profile"
                 android:textColor="#fff"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -47,7 +47,7 @@
                 android:textSize="10sp"
                 android:gravity="center_vertical"
                 android:scaleType="centerInside"
-                android:text="Logout"
+                android:text="@string/logout"
                 android:textColor="#fff" />
 
             <androidx.appcompat.widget.AppCompatImageButton
@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Username"
+        android:text="@string/username"
         android:textColor="@color/main_text_color"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="Mail address"
+        android:text="@string/email"
         android:textColor="@color/main_text_color"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -340,7 +340,7 @@
         android:gravity="center"
         android:layout_marginTop="100dp"
         android:src="@drawable/ic_afaqy_logo"
-        android:text="Powered by"
+        android:text="@string/powered_by"
         android:textColor="#2e2e2e"
         android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="@+id/ivAfaqyLogo"

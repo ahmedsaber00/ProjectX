@@ -94,6 +94,8 @@ android {
 dependencies {
     def presentationDependencies = rootProject.ext.presentationDependencies
     def presentationTestDependencies = rootProject.ext.presentationTestDependencies
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/pttcodec.jar')
 
     implementation project(':Domain')
     implementation project(':Data')
@@ -161,5 +163,6 @@ dependencies {
 
     //verification code
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.0'
+    implementation files('libs\\pttcodec.jar')
 
 }

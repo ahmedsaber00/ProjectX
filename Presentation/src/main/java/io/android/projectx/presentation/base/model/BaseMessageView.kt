@@ -1,5 +1,5 @@
 package io.android.projectx.presentation.base.model
 
-class ForgetPasswordView(
+class BaseMessageView(
     val message: String
 )

@@ -50,9 +50,9 @@ class ChannelsAdapter @Inject constructor() : RecyclerView.Adapter<ChannelsAdapt
 
 
         holder.itemView.setOnClickListener {
-            channelListener?.onChannelClicked(position)
             channels[position].isSelected = !channel.isSelected
             notifyItemChanged(position)
+            channelListener?.onChannelClicked(position)
         }
     }
 

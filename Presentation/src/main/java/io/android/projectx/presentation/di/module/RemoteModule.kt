@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import io.android.projectx.data.features.channels.repository.ChannelsRemote
 import io.android.projectx.data.features.login.repository.LoginRemote
+import io.android.projectx.data.features.profile.repository.ProfileRemote
 import io.android.projectx.data.features.recipes.repository.RecipesRemote
 import io.android.projectx.data.features.restaurants.repository.RestaurantsRemote
 import io.android.projectx.presentation.BuildConfig
@@ -14,6 +15,8 @@ import io.android.projectx.remote.features.channels.ChannelsRemoteImpl
 import io.android.projectx.remote.features.channels.service.ChannelsService
 import io.android.projectx.remote.features.login.LoginRemoteImpl
 import io.android.projectx.remote.features.login.service.LoginService
+import io.android.projectx.remote.features.profile.ProfileRemoteImpl
+import io.android.projectx.remote.features.profile.service.ProfileService
 import io.android.projectx.remote.features.recipes.service.RecipesService
 import io.android.projectx.remote.features.restaurants.RestaurantsRemoteImpl
 import io.android.projectx.remote.features.restaurants.service.RestaurantsService
@@ -53,6 +56,12 @@ abstract class  RemoteModule {
         fun provideChannelsService(remoteServiceFactory: RemoteServiceFactory): ChannelsService {
             return remoteServiceFactory.channelsService
         }
+
+        @Provides
+        @JvmStatic
+        fun provideProfileService(remoteServiceFactory: RemoteServiceFactory): ProfileService {
+            return remoteServiceFactory.profileService
+        }
     }
 
     @Binds
@@ -66,4 +75,7 @@ abstract class  RemoteModule {
 
     @Binds
     abstract fun bindChannelsRemote(channelsRemote: ChannelsRemoteImpl): ChannelsRemote
+
+    @Binds
+    abstract fun bindProfileRemote(profileRemote: ProfileRemoteImpl): ProfileRemote
 }

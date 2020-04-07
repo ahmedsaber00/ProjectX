@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import io.android.projectx.presentation.R
-import io.android.projectx.presentation.base.model.ForgetPasswordView
+import io.android.projectx.presentation.base.model.BaseMessageView
 import io.android.projectx.presentation.base.state.Resource
 import io.android.projectx.presentation.base.state.ResourceState
 import io.android.projectx.presentation.di.ViewModelProviderFactory
@@ -55,7 +55,7 @@ class ForgetPasswordFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loginViewModel.getVerificationCode().observe(this,
-            Observer<Resource<ForgetPasswordView>> { it?.let { handleDataState(it) } })
+            Observer<Resource<BaseMessageView>> { it?.let { handleDataState(it) } })
 
 
         buGetCode.setOnClickListener {
@@ -82,7 +82,7 @@ class ForgetPasswordFragment : DaggerFragment() {
         }
     }
 
-    private fun handleDataState(resource: Resource<ForgetPasswordView>) {
+    private fun handleDataState(resource: Resource<BaseMessageView>) {
         when (resource.status) {
             ResourceState.SUCCESS -> {
                 setupScreenForSuccess(resource.data)
@@ -97,7 +97,7 @@ class ForgetPasswordFragment : DaggerFragment() {
         }
     }
 
-    private fun setupScreenForSuccess(response: ForgetPasswordView?) {
+    private fun setupScreenForSuccess(response: BaseMessageView?) {
         progressView.visibility = View.GONE
         Toast.makeText(requireContext(), response?.message, Toast.LENGTH_LONG).show()
         val action =

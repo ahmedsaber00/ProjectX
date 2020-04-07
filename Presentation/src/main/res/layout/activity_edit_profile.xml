@@ -37,18 +37,6 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_margin="8dp"
-                android:drawableStart="@drawable/ic_logout"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical"
-                android:scaleType="centerInside"
-                android:text="@string/logout"
-                android:textSize="10sp"
-                android:textColor="#fff" />
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

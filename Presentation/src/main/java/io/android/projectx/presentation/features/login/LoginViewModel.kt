@@ -7,13 +7,13 @@ import io.android.projectx.domain.features.login.interactor.GetVerificationCodeU
 import io.android.projectx.domain.features.login.interactor.LoginUseCase
 import io.android.projectx.domain.features.login.interactor.ResetPasswordUseCase
 import io.android.projectx.domain.features.login.interactor.SendVerificationCodeUseCase
-import io.android.projectx.domain.features.login.model.ForgetPasswordModel
+import io.android.projectx.domain.features.login.model.BaseMessageModel
 import io.android.projectx.domain.features.login.model.LoginModel
 import io.android.projectx.domain.features.login.model.SendCodeModel
-import io.android.projectx.presentation.base.mapper.ForgetPasswordViewMapper
+import io.android.projectx.presentation.base.mapper.BaseViewMapper
 import io.android.projectx.presentation.base.mapper.LoginViewMapper
 import io.android.projectx.presentation.base.mapper.SendVerificationViewMapper
-import io.android.projectx.presentation.base.model.ForgetPasswordView
+import io.android.projectx.presentation.base.model.BaseMessageView
 import io.android.projectx.presentation.base.model.LoginView
 import io.android.projectx.presentation.base.model.SendCodeView
 import io.android.projectx.presentation.base.state.Resource
@@ -28,13 +28,13 @@ class LoginViewModel @Inject constructor(
     private val sendVerificationCodeUseCase: SendVerificationCodeUseCase,
     private val loginMapper: LoginViewMapper,
     private val sendVerificationViewMapper: SendVerificationViewMapper,
-    private val forgetPasswordMapper: ForgetPasswordViewMapper
+    private val baseMapper: BaseViewMapper
 ) : ViewModel() {
 
     private val liveDataLogin: MutableLiveData<Resource<LoginView>> = MutableLiveData()
-    private val liveDataGetVerificationCode: MutableLiveData<Resource<ForgetPasswordView>> =
+    private val liveDataGetVerificationCode: MutableLiveData<Resource<BaseMessageView>> =
         MutableLiveData()
-    private val liveDataResetPassword: MutableLiveData<Resource<ForgetPasswordView>> =
+    private val liveDataResetPassword: MutableLiveData<Resource<BaseMessageView>> =
         MutableLiveData()
     private val liveDataSendVerification: MutableLiveData<Resource<SendCodeView>> =
         MutableLiveData()
@@ -48,11 +48,11 @@ class LoginViewModel @Inject constructor(
         return liveDataLogin
     }
 
-    fun getVerificationCode(): LiveData<Resource<ForgetPasswordView>> {
+    fun getVerificationCode(): LiveData<Resource<BaseMessageView>> {
         return liveDataGetVerificationCode
     }
 
-    fun resetPassword(): LiveData<Resource<ForgetPasswordView>> {
+    fun resetPassword(): LiveData<Resource<BaseMessageView>> {
         return liveDataResetPassword
     }
 
@@ -113,11 +113,11 @@ class LoginViewModel @Inject constructor(
 
     }
 
-    inner class GetVerificationSubscriber : DisposableObserver<ForgetPasswordModel>() {
+    inner class GetVerificationSubscriber : DisposableObserver<BaseMessageModel>() {
 
-        override fun onNext(t: ForgetPasswordModel) {
+        override fun onNext(t: BaseMessageModel) {
             liveDataGetVerificationCode.postValue(
-                Resource.success(forgetPasswordMapper.mapToView(t))
+                Resource.success(baseMapper.mapToView(t))
             )
         }
 
@@ -129,11 +129,11 @@ class LoginViewModel @Inject constructor(
 
     }
 
-    inner class ResetPasswordSubscriber : DisposableObserver<ForgetPasswordModel>() {
+    inner class ResetPasswordSubscriber : DisposableObserver<BaseMessageModel>() {
 
-        override fun onNext(t: ForgetPasswordModel) {
+        override fun onNext(t: BaseMessageModel) {
             liveDataResetPassword.postValue(
-                Resource.success(forgetPasswordMapper.mapToView(t))
+                Resource.success(baseMapper.mapToView(t))
             )
         }
 

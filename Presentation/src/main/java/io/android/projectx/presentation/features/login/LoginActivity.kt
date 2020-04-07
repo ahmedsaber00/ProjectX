@@ -19,8 +19,8 @@ import io.android.projectx.presentation.R
 
 
 class LoginActivity : AppCompatActivity() {
-    lateinit var telMgr: TelephonyManager
     lateinit var dialog: Dialog
+    lateinit var telMgr: TelephonyManager
     lateinit var imeiTxt:AppCompatTextView
     lateinit var serialTxt:AppCompatTextView
     var deviceId = ""
@@ -42,8 +42,7 @@ class LoginActivity : AppCompatActivity() {
         serialTxt = dialog.findViewById<AppCompatTextView>(R.id.simSerial)
         telMgr = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+            != PackageManager.PERMISSION_GRANTED) {
             // We do not have this permission. Let's ask the user
             ActivityCompat.requestPermissions(
                 this,

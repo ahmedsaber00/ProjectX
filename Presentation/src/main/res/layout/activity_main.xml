@@ -106,7 +106,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Channel 1 / Channel 4"
+        android:text=""
         android:textColor="#000"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"

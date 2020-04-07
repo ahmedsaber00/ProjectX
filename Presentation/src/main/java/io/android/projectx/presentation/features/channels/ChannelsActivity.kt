@@ -11,6 +11,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,10 +39,13 @@ class ChannelsActivity : AppCompatActivity() {
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     private lateinit var channelsViewModel: ChannelsViewModel
 
+    private var stringBuilder :StringBuilder = StringBuilder("");
 
     private var channelsList: MutableList<ChannelsView> = mutableListOf()
     private var isTalking: Boolean = false
     private var micRecorder: MicRecorder? = null
+    @Volatile
+    private var selectedChannelsId: ArrayList<String> = ArrayList()
     var t: Thread? = null
 
     companion object {
@@ -85,6 +89,9 @@ class ChannelsActivity : AppCompatActivity() {
 
         ibProfile.setOnClickListener {
             startActivity(ProfileActivity.getStartIntent(this))
+        }
+        etSearch.doOnTextChanged{ text, start, count, after ->
+            getSearchedList(text.toString())
         }
         checkForMicPermission()
     }
@@ -130,6 +137,18 @@ class ChannelsActivity : AppCompatActivity() {
         }
     }
 
+    private fun getSearchedList(searchedText:String) {
+        channelsList?.let {
+            var tempChannelsList: MutableList<ChannelsView> = mutableListOf()
+            for (i in 0..channelsList.size - 1) {
+                if (channelsList[i].name.contains(searchedText))
+                    tempChannelsList.add(channelsList[i])
+            }
+            channelsAdapter.channels = tempChannelsList
+            channelsAdapter.notifyDataSetChanged()
+        }
+    }
+
     private fun pushToTalk() {
         if (!isTalking) { // stream audio
             isTalking = true
@@ -157,10 +176,27 @@ class ChannelsActivity : AppCompatActivity() {
     private val channelstener = object : ChannelListener {
 
         override fun onChannelClicked(channelPosition: Int) {
-            //  channelsViewModel.unBookmarkRecipe(channelCode)
+            if (channelsAdapter.channels[channelPosition].isSelected) {
+                if (!stringBuilder.isBlank())
+                    stringBuilder.append(" / ")
+                stringBuilder.append(channelsAdapter.channels[channelPosition].name)
+                selectedChannelsId.add(channelsAdapter.channels[channelPosition].code)
+            } else {
+                var channelName = channelsAdapter.channels[channelPosition].name
+                var index = stringBuilder.indexOf(channelName)
+                if (index!=-1)
+                    stringBuilder.delete(index,index+channelName.length)
+                if (stringBuilder.contains(" /  / "))
+                    stringBuilder.delete(stringBuilder.indexOf(" /  / "),stringBuilder.indexOf(" / / ")+3)
+                if (stringBuilder.endsWith(" / "))
+                    stringBuilder.delete(stringBuilder.length-3,stringBuilder.length)
+                selectedChannelsId.remove(channelsAdapter.channels[channelPosition].code)
+            }
+            tvSelectedChannels.setText(stringBuilder)
+            MicRecorder.channelsId = arrayOfNulls<String>(selectedChannelsId.size)
+            selectedChannelsId.toArray(MicRecorder.channelsId)
         }
     }
-
     override fun onDestroy() {
         super.onDestroy()
         if (micRecorder != null) {
@@ -225,7 +261,7 @@ class ChannelsActivity : AppCompatActivity() {
             try {
                 socket.connect(
                     InetSocketAddress(
-                        "192.168.1.12",
+                        "192.168.1.4",
                         1232//port
                     ), 500
                 )

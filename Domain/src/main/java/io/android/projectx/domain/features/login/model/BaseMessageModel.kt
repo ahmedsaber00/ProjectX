@@ -1,5 +1,5 @@
 package io.android.projectx.domain.features.login.model
 
-class ForgetPasswordModel(
+class BaseMessageModel(
     val message: String
 )

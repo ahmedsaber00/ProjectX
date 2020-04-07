@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import io.android.projectx.remote.base.RemoteFactory
 import io.android.projectx.remote.features.channels.service.ChannelsService
 import io.android.projectx.remote.features.login.service.LoginService
+import io.android.projectx.remote.features.profile.service.ProfileService
 import io.android.projectx.remote.features.recipes.service.RecipesService
 import io.android.projectx.remote.features.restaurants.service.RestaurantsService
 import okhttp3.OkHttpClient
@@ -14,6 +15,7 @@ import javax.inject.Inject
 class RemoteServiceFactory @Inject constructor(baseUrl: String, isDebug: Boolean) {
 
     // Services
+    var profileService: ProfileService
     var channelsService: ChannelsService
     var loginService: LoginService
     var recipesService: RecipesService
@@ -36,6 +38,7 @@ class RemoteServiceFactory @Inject constructor(baseUrl: String, isDebug: Boolean
         recipesService = retrofit.create(RecipesService::class.java)
         restaurantsService = retrofit.create(RestaurantsService::class.java)
         channelsService = retrofit.create(ChannelsService::class.java)
+        profileService = retrofit.create(ProfileService::class.java)
     }
 
 }

@@ -5,12 +5,17 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import com.afaqy.ptt.codec.PTTMessageEncoder;
+import com.afaqy.ptt.models.PTTMessageType;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
 public class MicRecorder implements Runnable {
     private static final int SAMPLE_RATE = 16000;
     public static volatile boolean keepRecording = true;
+    public static volatile String[] channelsId;
+private String imei;
 
     @Override
     public void run() {
@@ -21,11 +26,11 @@ public class MicRecorder implements Runnable {
                 AudioFormat.ENCODING_PCM_16BIT);
 
         Log.e("AUDIO", "buffersize = "+bufferSize);
-
         if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
             bufferSize = SAMPLE_RATE * 2;
         }
 
+        PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE,AudioFormat.CHANNEL_IN_MONO,bufferSize);
         try {
             final OutputStream outputStream = SocketHandler.getSocket().getOutputStream();
 
@@ -43,14 +48,14 @@ public class MicRecorder implements Runnable {
             }
             record.startRecording();
             Log.e("AUDIO", "STARTED RECORDING");
-
+            byte[] encodedMessage = pttMessageEncoder.encodePTTMessage(imei,channelsId,audioBuffer, PTTMessageType.VOICE);
             while(keepRecording) {
-                int numberOfBytes = record.read(audioBuffer, 0, audioBuffer.length);
+             //   int numberOfBytes = record.read(audioBuffer, 0, audioBuffer.length);
                 Runnable writeToOutputStream = new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            outputStream.write(audioBuffer);
+                            outputStream.write(encodedMessage);
                             outputStream.flush();
                         } catch (IOException e) {
                             e.printStackTrace();

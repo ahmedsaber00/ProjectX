@@ -1,10 +1,10 @@
 package io.android.projectx.data.features.login
 
-import io.android.projectx.data.features.login.mapper.ForgetPasswordMapper
+import io.android.projectx.data.features.login.mapper.BaseMessageMapper
 import io.android.projectx.data.features.login.mapper.SendCodeMapper
 import io.android.projectx.data.features.login.repository.LoginCache
 import io.android.projectx.data.features.login.store.LoginDataStoreFactory
-import io.android.projectx.domain.features.login.model.ForgetPasswordModel
+import io.android.projectx.domain.features.login.model.BaseMessageModel
 import io.android.projectx.domain.features.login.model.SendCodeModel
 import io.android.projectx.domain.features.login.repository.ForgetPasswordRepository
 import io.reactivex.Observable
@@ -12,12 +12,12 @@ import javax.inject.Inject
 
 class ForgetPasswordDataRepository @Inject constructor(
     private val sendVerificationMapper: SendCodeMapper,
-    private val mapper: ForgetPasswordMapper,
+    private val mapper: BaseMessageMapper,
     private val cache: LoginCache,
     private val factory: LoginDataStoreFactory
 ) : ForgetPasswordRepository {
 
-    override fun getVerificationCode(simSerial: String): Observable<ForgetPasswordModel> {
+    override fun getVerificationCode(simSerial: String): Observable<BaseMessageModel> {
         return factory.getDataStore(false, true).getVerificationCode(simSerial)
             .toObservable().distinctUntilChanged()
             .map {

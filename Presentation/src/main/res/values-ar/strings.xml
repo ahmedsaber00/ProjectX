@@ -8,7 +8,6 @@
     <string name="username">اسم المستخدم</string>
     <string name="password">كلمة المرور</string>
     <string name="did_you_forget_your_password">هل نسيت كلمة المرور؟</string>
-    <string name="powered_by">Powered by</string>
     <string name="login">تسجيل الدخول</string>
     <string name="Please_enter_username">برجاء ادخال اسم المستخدم</string>
     <string name="Please_enter_password">برجاء ادخال كلمة المرور</string>

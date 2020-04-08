@@ -5,6 +5,6 @@ import io.reactivex.Observable
 
 interface ProfileRepository {
 
-    fun getProfile(authorization: String,page:String): Observable<ProfileModel>
+    fun getProfile(authorization: String): Observable<ProfileModel>
 
 }

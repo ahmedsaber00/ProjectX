@@ -1,6 +1,7 @@
 package io.android.projectx.presentation.features.channels
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,7 +9,6 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
 import io.android.projectx.presentation.R
+import io.android.projectx.presentation.base.BaseActivity
 import io.android.projectx.presentation.base.PreferenceControl
 import io.android.projectx.presentation.base.model.ChannelsView
 import io.android.projectx.presentation.base.state.Resource
@@ -29,9 +30,11 @@ import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
-class ChannelsActivity : AppCompatActivity() {
+class ChannelsActivity : BaseActivity() {
 
     @Inject
     lateinit var channelsAdapter: ChannelsAdapter
@@ -48,6 +51,7 @@ class ChannelsActivity : AppCompatActivity() {
     private var selectedChannelsId: ArrayList<String> = ArrayList()
     var t: Thread? = null
 
+    private val REQUEST_CODE: Int = 100
     companion object {
         fun getStartIntent(context: Context): Intent {
             return Intent(context, ChannelsActivity::class.java)
@@ -66,7 +70,7 @@ class ChannelsActivity : AppCompatActivity() {
         channelsViewModel.getChannels().observe(this,
             Observer<Resource<List<ChannelsView>>> { it?.let { handleDataState(it) } })
 
-        channelsViewModel.fetchChannels(PreferenceControl.loadData(this), 0)
+        channelsViewModel.fetchChannels(PreferenceControl.loadToken(this), 0)
 
         var client = ClientClass()
         client.start()
@@ -88,7 +92,7 @@ class ChannelsActivity : AppCompatActivity() {
         }
 
         ibProfile.setOnClickListener {
-            startActivity(ProfileActivity.getStartIntent(this))
+            startActivityForResult(ProfileActivity.getStartIntent(this),REQUEST_CODE)
         }
         etSearch.doOnTextChanged{ text, start, count, after ->
             getSearchedList(text.toString())
@@ -116,7 +120,7 @@ class ChannelsActivity : AppCompatActivity() {
             ResourceState.ERROR -> {
                 progressView.visibility = View.GONE
                 if (resource.message.equals("HTTP 401 Unauthorized")) {
-                    PreferenceControl.saveData(this, "")
+                    PreferenceControl.saveToken(this, "")
                     finish()
                     startActivity(LoginActivity.getStartIntent(this))
                 }
@@ -187,9 +191,11 @@ class ChannelsActivity : AppCompatActivity() {
                 if (index!=-1)
                     stringBuilder.delete(index,index+channelName.length)
                 if (stringBuilder.contains(" /  / "))
-                    stringBuilder.delete(stringBuilder.indexOf(" /  / "),stringBuilder.indexOf(" / / ")+3)
+                    stringBuilder.delete(stringBuilder.indexOf(" /  / "),stringBuilder.indexOf(" /  / ")+3)
                 if (stringBuilder.endsWith(" / "))
                     stringBuilder.delete(stringBuilder.length-3,stringBuilder.length)
+                if (stringBuilder.startsWith(" / "))
+                    stringBuilder.delete(0,3)
                 selectedChannelsId.remove(channelsAdapter.channels[channelPosition].code)
             }
             tvSelectedChannels.setText(stringBuilder)
@@ -304,4 +310,10 @@ class ChannelsActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+            if (requestCode==REQUEST_CODE&&resultCode == Activity.RESULT_OK) {
+                recreate()
+            }
+    }
 }

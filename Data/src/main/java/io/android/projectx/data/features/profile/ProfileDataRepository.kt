@@ -12,8 +12,8 @@ class ProfileDataRepository @Inject constructor(
     private val factory: ProfileDataStoreFactory
 ) : ProfileRepository {
 
-    override fun getProfile(authorization: String, page: String): Observable<ProfileModel> {
-        return factory.getDataStore(true, true).getProfile(authorization,page)
+    override fun getProfile(authorization: String): Observable<ProfileModel> {
+        return factory.getDataStore(true, true).getProfile(authorization)
             .toObservable().distinctUntilChanged()
             .map {
                 mapper.mapFromEntity(it)

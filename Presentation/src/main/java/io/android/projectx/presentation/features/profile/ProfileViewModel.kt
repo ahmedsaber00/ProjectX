@@ -35,9 +35,9 @@ class ProfileViewModel @Inject constructor(
         return liveDataProfile
     }
 
-    fun fetchProfile(authorization: String,page:String) {
+    fun fetchProfile(authorization: String) {
         liveDataProfile.postValue(Resource(ResourceState.LOADING, null, null))
-        getProfileUseCase?.execute(ProfileSubscriber(),ProfileUseCase.Params(authorization,page))
+        getProfileUseCase?.execute(ProfileSubscriber(),ProfileUseCase.Params(authorization))
     }
 
     fun getLogout(): LiveData<Resource<BaseMessageView>> {

@@ -6,7 +6,7 @@ import io.reactivex.Flowable
 
 interface ProfileDataStore {
 
-    fun getProfile(authorization: String, simSerial: String): Flowable<ProfileEntity>
+    fun getProfile(authorization: String): Flowable<ProfileEntity>
 
     fun logout(
         authorization: String,

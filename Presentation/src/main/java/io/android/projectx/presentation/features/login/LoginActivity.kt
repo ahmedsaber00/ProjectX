@@ -16,9 +16,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation.findNavController
 import io.android.projectx.presentation.R
+import io.android.projectx.presentation.base.BaseActivity
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
     lateinit var dialog: Dialog
     lateinit var telMgr: TelephonyManager
     lateinit var imeiTxt:AppCompatTextView

@@ -8,6 +8,6 @@ interface ProfileRemote {
 
     fun logout(authorization: String , imei:String , simSerial:String): Flowable<BaseEntity>
 
-    fun getProfile(authorization: String,simSerial:String): Flowable<ProfileEntity>
+    fun getProfile(authorization: String): Flowable<ProfileEntity>
 
 }

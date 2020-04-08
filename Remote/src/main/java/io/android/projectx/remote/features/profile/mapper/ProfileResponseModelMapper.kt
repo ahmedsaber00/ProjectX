@@ -10,7 +10,9 @@ open class ProfileResponseModelMapper @Inject constructor() :
 
     override fun mapFromModel(model: ProfileModel): ProfileEntity {
         return ProfileEntity(
-            model.code
+            model.name?:"",model.email?:"",
+            model.countryCode?:"",model.mobile?:"",
+            model.address?:"",model.photo?:"",model.ssn?:""
         )
     }
 

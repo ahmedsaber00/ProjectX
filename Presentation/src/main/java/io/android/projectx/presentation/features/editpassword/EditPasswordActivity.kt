@@ -5,9 +5,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import io.android.projectx.presentation.R
+import io.android.projectx.presentation.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 
-class EditPasswordActivity : AppCompatActivity() {
+class EditPasswordActivity : BaseActivity() {
 
     companion object {
         fun getStartIntent(context: Context): Intent {

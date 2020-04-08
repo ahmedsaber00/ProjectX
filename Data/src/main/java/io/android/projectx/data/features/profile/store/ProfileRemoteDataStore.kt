@@ -11,8 +11,8 @@ open class ProfileRemoteDataStore @Inject constructor(
     private val profileRemote: ProfileRemote
 ) : ProfileDataStore {
 
-    override fun getProfile(authorization: String,simSerial: String): Flowable<ProfileEntity> {
-        return profileRemote.getProfile(authorization,simSerial)
+    override fun getProfile(authorization: String): Flowable<ProfileEntity> {
+        return profileRemote.getProfile(authorization)
     }
 
     override fun logout(

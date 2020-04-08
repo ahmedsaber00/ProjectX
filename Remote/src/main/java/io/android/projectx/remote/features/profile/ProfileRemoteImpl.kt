@@ -32,8 +32,8 @@ class ProfileRemoteImpl @Inject constructor(
             }
     }
 
-    override fun getProfile(authorization: String,simSerial: String): Flowable<ProfileEntity> {
-        return service.getProfile(authorization,simSerial)
+    override fun getProfile(authorization: String): Flowable<ProfileEntity> {
+        return service.getProfile(authorization)
             .map {
                 mapper.mapFromModel(it.profileModel)
             }

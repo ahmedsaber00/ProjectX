@@ -17,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed(
             {
                 finish()
-                if (PreferenceControl.loadData(this).equals(""))
+                if (PreferenceControl.loadToken(this).equals(""))
                     startActivity(LoginActivity.getStartIntent(this))
                 else
                     startActivity(ChannelsActivity.getStartIntent(this))

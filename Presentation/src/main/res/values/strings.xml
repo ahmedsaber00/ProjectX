@@ -37,4 +37,9 @@
     <string name="if_you_didn_t_receive_a_code">If you didn’t receive a code !</string>
     <string name="resend">Resend</string>
     <string name="verify">Verify</string>
+
+    <string name="change_language">You want to change language?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 </resources>

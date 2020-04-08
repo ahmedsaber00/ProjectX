@@ -10,8 +10,8 @@ import retrofit2.http.Query
 
 interface ProfileService {
 
-    @GET("user")
-    fun getProfile(@Header("Authorization") authorization: String, @Query("page") pageNumber: String): Flowable<ProfileResponseModel>
+    @GET("users/profile")
+    fun getProfile(@Header("Authorization") authorization: String): Flowable<ProfileResponseModel>
 
     @POST("channels")
     fun updateProfile(@Header("Authorization") authorization: String, @Query("page") pageNumber: String): Flowable<ProfileResponseModel>

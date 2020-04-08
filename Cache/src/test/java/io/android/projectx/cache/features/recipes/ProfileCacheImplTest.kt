@@ -13,7 +13,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class LoginCacheImplTest {
+class ProfileCacheImplTest {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()

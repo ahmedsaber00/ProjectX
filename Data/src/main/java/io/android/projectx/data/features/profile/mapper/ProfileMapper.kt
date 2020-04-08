@@ -10,13 +10,17 @@ open class ProfileMapper @Inject constructor() :
 
     override fun mapFromEntity(entity: ProfileEntity): ProfileModel {
         return ProfileModel(
-            entity.accessToken,entity.accessToken
+            entity.name,entity.email,
+            entity.countryCode,entity.mobile,
+            entity.address,entity.photo,entity.ssn
         )
     }
 
     override fun mapToEntity(domain: ProfileModel): ProfileEntity {
         return ProfileEntity(
-            domain.name
+            domain.name?:"",domain.email?:"",
+            domain.countryCode?:"",domain.mobile?:"",
+            domain.address?:"",domain.photo?:"",domain.ssn?:""
         )
     }
 

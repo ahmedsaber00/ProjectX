@@ -8,9 +8,13 @@ open class ProfileViewMapper @Inject constructor() : Mapper<ProfileView, Profile
 
     override fun mapToView(type: ProfileModel): ProfileView {
         return ProfileView(
-            type.code,
             type.name,
-            false
+            type.email,
+            type.countryCode,
+            type.mobile,
+            type.address,
+            type.photo,
+            type.ssn
         )
     }
 }

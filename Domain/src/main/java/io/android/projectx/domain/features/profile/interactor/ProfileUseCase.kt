@@ -15,13 +15,13 @@ open class ProfileUseCase @Inject constructor(
 
     override fun buildUseCaseObservable(params: Params?): Observable<ProfileModel> {
         if (params == null) throw IllegalArgumentException("Params can't be null !!")
-        return profileRepository.getProfile(params.authorization,params.page)
+        return profileRepository.getProfile(params.authorization)
     }
 
-    data class Params constructor(val authorization: String,val page: String) {
+    data class Params constructor(val authorization: String) {
         companion object {
-            fun forChannels(authorization: String,page: String): Params {
-                return Params(authorization,page)
+            fun forChannels(authorization: String): Params {
+                return Params(authorization)
             }
         }
     }

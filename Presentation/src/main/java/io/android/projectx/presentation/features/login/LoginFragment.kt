@@ -147,7 +147,7 @@ class LoginFragment : DaggerFragment() {
         activity?.finish()
         progressView.visibility = View.GONE
         loginView?.let {
-            PreferenceControl.saveData(requireContext(), "Bearer " + loginView.accessToken)
+            PreferenceControl.saveToken(requireContext(), "Bearer " + loginView.accessToken)
             startActivity(ChannelsActivity.getStartIntent(requireContext()))
         } ?: run {
 

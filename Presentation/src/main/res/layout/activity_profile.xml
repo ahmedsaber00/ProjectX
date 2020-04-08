@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:textColor="@color/transparent_text_color"
-        android:text="mennaanwer"
+        tools:text="mennaanwer"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +129,7 @@
         android:textColor="@color/transparent_text_color"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="menna.anwer@gmail.com"
+        tools:text="menna.anwer@gmail.com"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -161,7 +161,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:inputType="textPassword"
-        android:text="0123456789"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -192,7 +191,7 @@
         android:textColor="@color/transparent_text_color"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="0123456789"
+        tools:text="0123456789"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -223,7 +222,7 @@
         android:textColor="@color/transparent_text_color"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="389439804-3094-3994945"
+        tools:text="389439804-3094-3994945"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -255,7 +254,7 @@
         android:maxWidth="250dp"
         android:textColor="@color/transparent_text_color"
         android:layout_marginEnd="16dp"
-        android:text="13st Ahmed el Shazly, Gada, Saudi Arabia"
+        tools:text="13st Ahmed el Shazly, Gada, Saudi Arabia"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView6"
         app:layout_constraintEnd_toEndOf="parent"
@@ -269,37 +268,6 @@
         app:layout_constraintTop_toBottomOf="@+id/appCompatTextView6" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/appCompatTextView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="Gender"
-        android:textColor="@color/main_text_color"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView6" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvGender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:textColor="@color/transparent_text_color"
-        android:text="Female"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appCompatTextView7" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/gray"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView7" />
-
-    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/appCompatTextView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -309,7 +277,7 @@
         android:textColor="@color/main_text_color"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView7" />
+        app:layout_constraintTop_toBottomOf="@+id/appCompatTextView6" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLanguage"
@@ -317,7 +285,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/transparent_text_color"
         android:layout_marginEnd="16dp"
-        android:text="English"
+        tools:text="English"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/appCompatTextView8"
         app:layout_constraintEnd_toEndOf="parent"

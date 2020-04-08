@@ -12,7 +12,7 @@ import org.junit.runners.JUnit4
 import kotlin.test.assertEquals
 
 @RunWith(JUnit4::class)
-class CachedLoginMapperTest {
+class CachedProfileMapperTest {
 
     private val mapper =
         CachedLoginMapper()

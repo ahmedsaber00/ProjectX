@@ -1,0 +1,15 @@
+package io.android.ptt.presentation.base.model
+
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class ProfileView (
+    var name: String?,
+    var email: String?,
+    var countryCode: String?,
+    var mobile: String?,
+    var address: String?,
+    var photo: String?,
+    var ssn: String?
+): Parcelable

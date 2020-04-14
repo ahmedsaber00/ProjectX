@@ -7,6 +7,10 @@ dependencies {
     implementation domainDependencies.javaxInject
     implementation domainDependencies.rxKotlin
     implementation domainDependencies.kotlin
+    implementation remoteDependencies.okHttp
+    implementation remoteDependencies.okHttpLogger
+    implementation remoteDependencies.retrofit
+    implementation remoteDependencies.gson
 
     testImplementation domainTestDependencies.junit
     testImplementation domainTestDependencies.mockito

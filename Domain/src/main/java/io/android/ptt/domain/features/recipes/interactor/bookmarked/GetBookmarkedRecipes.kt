@@ -1,0 +1,19 @@
+package io.android.ptt.domain.features.recipes.interactor.bookmarked
+
+import io.android.ptt.domain.base.executor.PostExecutionThread
+import io.android.ptt.domain.base.interactor.ObservableUseCase
+import io.android.ptt.domain.features.recipes.model.Recipe
+import io.android.ptt.domain.features.recipes.repository.RecipesRepository
+import io.reactivex.Observable
+import javax.inject.Inject
+
+open class GetBookmarkedRecipes @Inject constructor(
+    private val recipesRepository: RecipesRepository,
+    postExecutionThread: PostExecutionThread
+) : ObservableUseCase<List<Recipe>, Nothing?>(postExecutionThread) {
+
+    public override fun buildUseCaseObservable(params: Nothing?): Observable<List<Recipe>> {
+        return recipesRepository.getBookmarkedRecipes()
+    }
+
+}

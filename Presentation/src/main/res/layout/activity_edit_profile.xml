@@ -50,6 +50,7 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivProfile"
+        android:clickable="false"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@drawable/profile"
@@ -72,9 +73,9 @@
         android:id="@+id/tvEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="false"
         android:drawableTop="@drawable/ic_edit"
         android:text="Edit"
-        android:clickable="false"
         android:textColor="@color/c_white"
         app:layout_constraintBottom_toBottomOf="@+id/blue"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,168 +88,192 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
         android:textColorHint="@color/transparent_text_color"
         app:hintEnabled="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfile">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/profile_et_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:textSize="12sp"
-            android:text="mennaanwer"
             android:gravity="start|center_vertical"
-            android:hint="@string/username"
-            android:textColorHint="@color/transparent_text_color"
+            android:hint="@string/fullname"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1"
+            android:paddingTop="2dp"
             android:textAlignment="viewStart"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/transparent_text_color"
+            android:textSize="12sp"
+            tools:text="mennaanwer" />
     </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/profile_layout_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:textColorHint="@color/transparent_text_color"
-        app:layout_constraintTop_toBottomOf="@+id/profile_layout_username"
         app:hintEnabled="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_layout_username">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/profile_et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:paddingTop="2dp"
             android:gravity="start|center_vertical"
             android:hint="@string/email"
-            android:text="aaa"
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:maxLines="1"
+            android:paddingTop="2dp"
             android:textAlignment="viewStart"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"
+            tools:text="aaa" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/profile_layout_password"
         android:layout_width="0dp"
-        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:textColorHint="@color/transparent_text_color"
-        app:layout_constraintTop_toBottomOf="@+id/profile_layout_email"
         app:hintEnabled="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_layout_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/profile_et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:paddingTop="2dp"
+            android:enabled="false"
             android:gravity="start|center_vertical"
             android:hint="@string/password"
-            android:text="aaaaaaaa"
             android:imeOptions="actionNext"
             android:inputType="textPassword"
-            android:enabled="false"
             android:maxLines="1"
-            
-            
+            android:paddingTop="2dp"
+            android:text="aaaaaaaa"
             android:textAlignment="viewStart"
-            android:textColor="@color/colorPrimary" />
+
+
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvChangePassword"
-        android:layout_marginEnd="16dp"
-        android:clickable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:clickable="false"
         android:text="@string/change_password"
         android:textColor="@color/colorAccent"
         android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/profile_layout_password"
         app:layout_constraintBottom_toBottomOf="@+id/profile_layout_password"
-        app:layout_constraintTop_toTopOf="@+id/profile_layout_password"/>
+        app:layout_constraintEnd_toEndOf="@+id/profile_layout_password"
+        app:layout_constraintTop_toTopOf="@+id/profile_layout_password" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/profile_layout_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
         android:textColorHint="@color/transparent_text_color"
-        app:layout_constraintTop_toBottomOf="@+id/profile_layout_password"
         app:hintEnabled="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_layout_password">
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/profile_et_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:paddingTop="2dp"
-            android:text="asdasd"
             android:gravity="start|center_vertical"
             android:hint="@string/phone_no"
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:maxLines="1"
+            android:paddingStart="40dp"
+            android:paddingTop="4dp"
             android:textAlignment="viewStart"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.hbb20.CountryCodePicker
+        android:id="@+id/ccp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="12sp"
+        app:ccp_arrowColor="@color/colorPrimary"
+        app:ccp_autoDetectCountry="true"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="16dp"
+        app:ccp_contentColor="@color/colorPrimary"
+        app:ccp_defaultNameCode="SA"
+        app:ccp_showArrow="false"
+        app:ccp_showFlag="false"
+        app:ccp_showFullName="false"
+        app:ccp_showNameCode="false"
+        app:ccp_showPhoneCode="true"
+        app:ccp_textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/profile_layout_phone"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_layout_phone" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/profile_layout_ssn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="12dp"
-        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:textColorHint="@color/transparent_text_color"
-        app:layout_constraintTop_toBottomOf="@+id/profile_layout_phone"
         app:hintEnabled="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_layout_phone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/profile_et_ssn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:paddingTop="2dp"
             android:gravity="start|center_vertical"
             android:hint="@string/ssn"
             android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLines="1"
+            android:paddingTop="2dp"
             android:textAlignment="viewStart"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -256,29 +281,29 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:textColorHint="@color/transparent_text_color"
-        app:layout_constraintTop_toBottomOf="@+id/profile_layout_ssn"
         app:hintEnabled="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:hintTextAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_layout_ssn">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/profile_et_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:paddingTop="2dp"
             android:gravity="start|center_vertical"
             android:hint="@string/address"
             android:imeOptions="actionNext"
             android:inputType="textPostalAddress"
             android:maxLines="1"
+            android:paddingTop="2dp"
             android:textAlignment="viewStart"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -304,5 +329,30 @@
         app:layout_constraintBottom_toBottomOf="@+id/ivAfaqyLogo"
         app:layout_constraintEnd_toStartOf="@+id/ivAfaqyLogo"
         app:layout_constraintTop_toTopOf="@+id/ivAfaqyLogo" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="15sp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/bg_button_rounded"
+        android:text="@string/submit"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_layout_address" />
+
+    <ProgressBar
+        android:id="@+id/progressView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

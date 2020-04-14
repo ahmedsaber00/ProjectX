@@ -127,6 +127,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt presentationDependencies.lifecycleCompiler
     kapt presentationDependencies.roomCompiler
+    implementation remoteDependencies.okHttp
+    implementation remoteDependencies.okHttpLogger
 
     //dagger
     implementation presentationDependencies.dagger
@@ -164,5 +166,9 @@ dependencies {
     //verification code
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.0'
     implementation files('libs\\pttcodec.jar')
+
+    implementation remoteDependencies.retrofit
+    implementation remoteDependencies.retrofitConverter
+    implementation remoteDependencies.retrofitAdapter
 
 }

@@ -10,6 +10,10 @@ dependencies {
     implementation dataDependencies.javaxInject
     implementation dataDependencies.rxKotlin
     implementation dataDependencies.kotlin
+    implementation remoteDependencies.okHttp
+    implementation remoteDependencies.okHttpLogger
+    implementation remoteDependencies.retrofit
+
 
     testImplementation dataTestDependencies.junit
     testImplementation dataTestDependencies.kotlinJUnit

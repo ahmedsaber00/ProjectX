@@ -1,0 +1,35 @@
+package io.android.ptt.presentation.di.module
+
+import android.app.Application
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import io.android.ptt.cache.features.recipes.RecipesCacheImpl
+import io.android.ptt.cache.AppDatabase
+import io.android.ptt.cache.features.login.LoginCacheImpl
+import io.android.ptt.cache.features.restaurants.RestaurantsCacheImpl
+import io.android.ptt.data.features.login.repository.LoginCache
+import io.android.ptt.data.features.recipes.repository.RecipesCache
+import io.android.ptt.data.features.restaurants.repository.RestaurantsCache
+
+@Module
+abstract class CacheModule {
+
+    @Module
+    companion object {
+        @Provides
+        @JvmStatic
+        fun providesDataBase(application: Application): AppDatabase {
+            return AppDatabase.getInstance(application)
+        }
+    }
+
+    @Binds
+    abstract fun bindLoginCache(loginCache: LoginCacheImpl): LoginCache
+
+    @Binds
+    abstract fun bindRecipesCache(recipesCache: RecipesCacheImpl): RecipesCache
+
+    @Binds
+    abstract fun bindRestaurantsCache(restaurantsCache: RestaurantsCacheImpl): RestaurantsCache
+}

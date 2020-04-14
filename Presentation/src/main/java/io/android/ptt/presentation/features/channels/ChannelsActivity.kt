@@ -72,9 +72,9 @@ class ChannelsActivity : BaseActivity() {
         channelsViewModel.fetchChannels(PreferenceControl.loadToken(this), 0)
 
         var client = ClientClass()
-        client.start()/*
+        client.start()
         stopService(Intent(applicationContext, AudioStreamingService::class.java))
-        startForegroundService(Intent(applicationContext, AudioStreamingService::class.java))*/
+        startForegroundService(Intent(applicationContext, AudioStreamingService::class.java))
 
         ivMic.setOnTouchListener { view, motionEvent ->
             if (checkForMicPermission()) {
@@ -261,13 +261,12 @@ class ChannelsActivity : BaseActivity() {
 
     class ClientClass internal constructor() : Thread() {
         var socket: Socket
-        var hostAddress: String
         override fun run() {
             try {
                 socket.connect(
                     InetSocketAddress(
-                        "192.168.1.4",
-                        1232//port
+                        "212.70.49.194",
+                        12012//port
                     ), 500
                 )
                 SocketHandler.setSocket(socket)
@@ -280,7 +279,6 @@ class ChannelsActivity : BaseActivity() {
 
         init {
             socket = Socket()
-            hostAddress = "192.168.1.191"
         }
     }
 

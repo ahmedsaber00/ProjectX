@@ -1,0 +1,37 @@
+package com.afaqy.ptt.presentation.di
+
+import android.app.Application
+import dagger.BindsInstance
+import dagger.Component
+import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
+import com.afaqy.ptt.domain.features.login.repository.RecipesRepository
+import com.afaqy.ptt.presentation.di.module.PresentationModule
+import com.afaqy.ptt.presentation.di.module.UiModule
+import com.afaqy.ptt.presentation.test.TestApplication
+import javax.inject.Singleton
+
+@Singleton
+@Component(
+    modules = [AndroidSupportInjectionModule::class,
+        TestApplicationModule::class,
+        TestCacheModule::class,
+        TestDataModule::class,
+        PresentationModule::class,
+        UiModule::class,
+        TestRemoteModule::class
+    ]
+)
+interface TestAppComponent : AndroidInjector<TestApplication> {
+
+    fun recipesRepository(): RecipesRepository
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
+
+        fun build(): TestAppComponent
+    }
+
+}

@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'com.google.gms.google-services'
 
 //load app.properties
 def appPropertiesFile = rootProject.file("app.properties")
@@ -17,11 +18,11 @@ android {
     buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
 
     defaultConfig {
-        applicationId "io.android.projectx"
+        applicationId "com.afaqy.ptt"
 
         minSdkVersion globalConfiguration["androidMinSdkVersion"]
         targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
-        testInstrumentationRunner "io.android.projectx.presentation.test.TestRunner"
+        testInstrumentationRunner "com.afaqy.ptt.presentation.test.TestRunner"
 
         versionCode rootProject.ext.app_version_code
         versionName "1.0.0"
@@ -50,13 +51,13 @@ android {
     flavorDimensions "default"
     productFlavors {
         production {
-            applicationId "io.android.projectx"
+            applicationId "com.afaqy.ptt"
             dimension "default"
             // ConfigFields
             buildConfigField("String", "API_BASE_URL", "\"${production_api_base_url}\"")
         }
         staging {
-            applicationId "io.android.projectx"
+            applicationId "com.afaqy.ptt"
             dimension "default"
             applicationIdSuffix ".staging"
             versionNameSuffix "-staging"
@@ -64,7 +65,7 @@ android {
             buildConfigField("String", "API_BASE_URL", "\"${staging_api_base_url}\"")
         }
         dev {
-            applicationId "io.android.projectx"
+            applicationId "com.afaqy.ptt"
             dimension "default"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
@@ -170,5 +171,5 @@ dependencies {
     implementation remoteDependencies.retrofit
     implementation remoteDependencies.retrofitConverter
     implementation remoteDependencies.retrofitAdapter
-
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
 }

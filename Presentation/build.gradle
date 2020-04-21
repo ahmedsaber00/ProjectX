@@ -53,22 +53,21 @@ android {
         production {
             applicationId "com.afaqy.ptt"
             dimension "default"
+            versionNameSuffix "-production"
             // ConfigFields
             buildConfigField("String", "API_BASE_URL", "\"${production_api_base_url}\"")
-        }
-        staging {
-            applicationId "com.afaqy.ptt"
-            dimension "default"
-            applicationIdSuffix ".staging"
-            versionNameSuffix "-staging"
-            // ConfigFields
-            buildConfigField("String", "API_BASE_URL", "\"${staging_api_base_url}\"")
         }
         dev {
             applicationId "com.afaqy.ptt"
             dimension "default"
-            applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
+            // ConfigFields
+            buildConfigField("String", "API_BASE_URL", "\"${dev_api_base_url}\"")
+        }
+        qc {
+            applicationId "com.afaqy.ptt"
+            dimension "default"
+            versionNameSuffix "-test"
             // ConfigFields
             buildConfigField("String", "API_BASE_URL", "\"${quality_api_base_url}\"")
         }

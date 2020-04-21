@@ -141,6 +141,8 @@ class ProfileActivity : BaseActivity() {
                     PreferenceControl.saveToken(this, "")
                     finish()
                     startActivity(LoginActivity.getStartIntent(this))
+                }else{
+                    Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
                 }
 
             }
@@ -170,6 +172,8 @@ class ProfileActivity : BaseActivity() {
                 progressView.visibility = View.GONE
                 if (resource.message.equals("HTTP 401 Unauthorized")) {
                     logoutAndGoToLoginScreen(resource.message?.let { BaseMessageView(it) });
+                }else{
+                    Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
                 }
 
             }

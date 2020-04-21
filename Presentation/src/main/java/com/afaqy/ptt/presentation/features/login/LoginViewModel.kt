@@ -111,7 +111,24 @@ class LoginViewModel @Inject constructor(
         override fun onComplete() {}
 
         override fun onError(e: Throwable) {
-            if (e.localizedMessage.equals("HTTP 400 Bad Request")) {
+            if (e.localizedMessage.equals("422 Unprocessable Entity")) {
+                var baseError: BaseErrorView? = null
+                var stringBuilder: StringBuilder? = StringBuilder("")
+
+                (e as HttpException).response()?.errorBody()?.let {
+                    baseError = Gson().fromJson(it.string(), BaseErrorView::class.java)
+                }
+                for (error: String in baseError?.errors!!) {
+                    stringBuilder?.append(error)?.append("\n")
+                }
+                liveDataLogin.postValue(
+                    Resource(
+                        ResourceState.ERROR,
+                        null,
+                        stringBuilder.toString()
+                    )
+                )
+            }else if (e.localizedMessage.equals("400 Bad Request")) {
                 var baseError: BaseErrorView? = null
                 (e as HttpException).response()?.errorBody()?.let {
                     baseError = Gson().fromJson(it.string(), BaseErrorView::class.java)

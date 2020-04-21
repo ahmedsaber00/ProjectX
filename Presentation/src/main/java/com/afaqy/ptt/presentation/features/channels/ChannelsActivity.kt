@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -118,10 +119,12 @@ class ChannelsActivity : BaseActivity() {
             }
             ResourceState.ERROR -> {
                 progressView.visibility = View.GONE
-                if (resource.message.equals("HTTP 401 Unauthorized")) {
+                if (resource.message.equals("401 Unauthorized")) {
                     PreferenceControl.saveToken(this, "")
                     finish()
                     startActivity(LoginActivity.getStartIntent(this))
+                }else{
+                    Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
                 }
 
             }

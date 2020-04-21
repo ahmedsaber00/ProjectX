@@ -16,8 +16,9 @@ object RemoteFactory {
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+          //  .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
             .build()
 
 

@@ -48,7 +48,7 @@ private String imei;
             }
             record.startRecording();
             Log.e("AUDIO", "STARTED RECORDING");
-            byte[] encodedMessage = pttMessageEncoder.encodePTTMessage(imei,channelsId,audioBuffer, PTTMessageType.VOICE);
+            byte[] encodedMessage = pttMessageEncoder.encodePTTMessage(imei,imei,channelsId,audioBuffer, PTTMessageType.VOICE);
             while(keepRecording) {
              //   int numberOfBytes = record.read(audioBuffer, 0, audioBuffer.length);
                 Runnable writeToOutputStream = new Runnable() {

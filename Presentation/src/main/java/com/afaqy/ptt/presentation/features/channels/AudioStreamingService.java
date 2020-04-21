@@ -22,9 +22,14 @@ import com.afaqy.ptt.models.PTTMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.ByteChannel;
+import java.nio.channels.SocketChannel;
 import java.util.List;
 
 public class AudioStreamingService extends Service {
+    private ByteBuffer buf = ByteBuffer.allocateDirect(1024 * 1024);
     private static final int SAMPLE_RATE = 16000;
     public boolean keepPlaying = true;
     private AudioTrack audioTrack;
@@ -86,24 +91,39 @@ public class AudioStreamingService extends Service {
 
                 Log.v("PLAY", "Audio streaming started");
 
-                byte[] buffer = new byte[bufferSize];
+
                 int offset = 0;
 
                 try {
-                    InputStream inputStream = SocketHandler.getSocket().getInputStream();
-                    PTTMessageDecoder pttMessageDecoder = new PTTMessageDecoder(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, bufferSize);
-                    List<PTTMessage> messageList = pttMessageDecoder.decodeToPTTMessages(buffer);
-                    buffer = messageList.get(0).getVoiceSignals();
-                    int bytes_read = inputStream.read(buffer, 0, bufferSize);
-                    /*for (int i = 0; i <messageList.size() ; i++) {
-                        audioTrack.write(messageList.get(i).getVoiceSignals(), 0,messageList.get(i).getVoiceSignals().length);
-                    }*/
-                    while (keepPlaying && (bytes_read != -1)) {
-                        audioTrack.write(buffer, 0, buffer.length);
-                        bytes_read = inputStream.read(buffer, 0, bufferSize);
-                    }
+                    Socket socket = SocketHandler.getSocket();
+                    SocketChannel chan = socket.getChannel();
 
-                    inputStream.close();
+                    PTTMessageDecoder pttMessageDecoder = new PTTMessageDecoder(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, bufferSize);
+                    int headerLengthSize = PTTMessageDecoder.getPTTMessageHeaderLengthSize();
+                    byte[] sizeBytes = new byte[headerLengthSize];
+
+
+                    while (keepPlaying) {
+                        ensure(headerLengthSize, chan);
+                        buf.get(sizeBytes);
+                        int pttMessageSize = pttMessageDecoder.getPTTMessageSize(sizeBytes);
+                        if (pttMessageSize != -1) {
+                            ensure(pttMessageSize, chan);
+                            byte[] pttMessageBytes = new byte[pttMessageSize];
+                            buf.get(pttMessageBytes);
+                            byte[] pttWholeMessageBytes = new byte[headerLengthSize + pttMessageSize];
+                            System.arraycopy(sizeBytes, 0, pttWholeMessageBytes, 0, headerLengthSize);
+                            System.arraycopy(pttMessageBytes, 0, pttWholeMessageBytes, headerLengthSize, pttMessageSize);
+                            PTTMessage pttMessage = pttMessageDecoder.decodePTTMessage(pttWholeMessageBytes);
+                            if (pttMessage != null) {
+                                //audio track
+                                byte[] buffer = pttMessage.getVoiceSignals();
+                                audioTrack.write(buffer, 0, buffer.length);
+                            }
+                        }
+                        buf.position(buf.position() + pttMessageSize);
+                    }
+                    chan.close();
                     audioTrack.release();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -137,5 +157,17 @@ public class AudioStreamingService extends Service {
         startForeground(2, notification);
     }
 
+    private void ensure(int len, ByteChannel chan) throws IOException {
+        if (buf.remaining() < len) {
+            buf.compact();
+            buf.flip();
+            do {
+                buf.position(buf.limit());
+                buf.limit(buf.capacity());
+                chan.read(buf);
+                buf.flip();
+            } while (buf.remaining() < len);
+        }
+    }
 
 }

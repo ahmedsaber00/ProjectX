@@ -31,6 +31,7 @@ import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
+import java.nio.channels.SocketChannel
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -248,33 +249,19 @@ class ChannelsActivity : BaseActivity() {
         return true
     }
 
-    class ServerClass : Thread() {
-        var socket: Socket? = null
-        var serverSocket: ServerSocket? = null
-        override fun run() {
-            try {
-                serverSocket =
-                    ServerSocket(1232)//port
-                socket = serverSocket!!.accept()
-                SocketHandler.setSocket(socket)
-                //  startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-    }
 
     class ClientClass internal constructor() : Thread() {
-        var socket: Socket
+
         override fun run() {
             try {
-                socket.connect(
+                var socketChannel = SocketChannel.open();
+                    socketChannel.connect(
                     InetSocketAddress(
                         "212.70.49.194",
-                        12012//port
-                    ), 500
+                        12050//port
+                    )
                 )
-                SocketHandler.setSocket(socket)
+                SocketHandler.setSocket(socketChannel)
                 // startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -282,9 +269,7 @@ class ChannelsActivity : BaseActivity() {
             }
         }
 
-        init {
-            socket = Socket()
-        }
+
     }
 
     override fun onPause() {

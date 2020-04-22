@@ -1,15 +1,16 @@
 package com.afaqy.ptt.presentation.features.channels;
 
 import java.net.Socket;
+import java.nio.channels.SocketChannel;
 
 public class SocketHandler {
-    private static Socket socket;
+    private static SocketChannel socketChannel;
 
-    public static synchronized Socket getSocket(){
-        return socket;
+    public static synchronized SocketChannel getSocketChannel(){
+        return socketChannel;
     }
 
-    public static synchronized void setSocket(Socket socket){
-        SocketHandler.socket = socket;
+    public static synchronized void setSocket(SocketChannel socketChannel){
+        SocketHandler.socketChannel = socketChannel;
     }
 }

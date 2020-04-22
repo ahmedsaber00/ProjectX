@@ -27,6 +27,8 @@ public class AudioStreamingService extends Service {
     private ByteBuffer receivingBuffer = ByteBuffer.allocateDirect(1024 * 1024);
 
     private static final int SAMPLE_RATE = 16000;
+    private static final int FRAME_SIZE = 160;
+
     public boolean keepPlaying = true;
     private AudioTrack audioTrack;
 
@@ -88,7 +90,7 @@ public class AudioStreamingService extends Service {
                 try {
                     SocketChannel socketChannel = SocketHandler.getSocketChannel();
 
-                    PTTMessageDecoder pttMessageDecoder = new PTTMessageDecoder(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, bufferSize);
+                    PTTMessageDecoder pttMessageDecoder = new PTTMessageDecoder(SAMPLE_RATE, 1, bufferSize);
                     int headerLengthSize = PTTMessageDecoder.getPTTMessageHeaderLengthSize();
                     byte[] sizeBytes = new byte[headerLengthSize];
                     receivingBuffer.limit(0);

@@ -15,9 +15,12 @@ import java.nio.channels.SocketChannel;
 
 public class MicRecorder implements Runnable {
     private static final int SAMPLE_RATE = 16000;
+    private static final int FRAME_SIZE = 160;
+
+
     public static volatile boolean keepRecording = true;
     public static volatile String[] channelsId;
-private String imei;
+    private String imei;
 
     @Override
     public void run() {
@@ -32,13 +35,13 @@ private String imei;
             bufferSize = SAMPLE_RATE * 2;
         }
         SocketChannel socketChannel = SocketHandler.getSocketChannel();
-        PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, bufferSize);
+        PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE, 1, FRAME_SIZE);
         try {
             //    final OutputStream outputStream = SocketHandler.getSocket().getOutputStream();
             ByteBuffer audioStreamBuffer = ByteBuffer.allocateDirect(1024);
-            final byte[] audioBuffer = new byte[bufferSize];
+            final byte[] audioBuffer = new byte[2*FRAME_SIZE];
 
-            AudioRecord record = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION,
+            AudioRecord record = new AudioRecord(MediaRecorder.AudioSource.MIC,
                     SAMPLE_RATE,
                     AudioFormat.CHANNEL_IN_MONO,
                     AudioFormat.ENCODING_PCM_16BIT,

@@ -50,4 +50,17 @@ class EditProfileDataRepository @Inject constructor(
                 mapper.mapFromEntity(it)
             }
     }
+
+    override fun editProfile(
+        authorization: String,
+        method: RequestBody,
+        currentPassword: RequestBody,
+        password: RequestBody,
+        passwordConfirmation: RequestBody): Observable<BaseMessageModel> {
+        return factory.getDataStore(false, true).editProfile(authorization,method,currentPassword,password, passwordConfirmation)
+            .toObservable().distinctUntilChanged()
+            .map {
+                mapper.mapFromEntity(it)
+            }
+    }
 }

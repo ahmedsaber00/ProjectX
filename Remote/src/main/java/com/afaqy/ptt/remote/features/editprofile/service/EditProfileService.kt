@@ -35,4 +35,15 @@ interface EditProfileService {
         @Part("address") address: RequestBody
     ): Flowable<BaseMessageModel>
 
+
+    @Multipart
+    @POST("users/profile")
+    fun editProfile(
+        @Header("Authorization") authorization: String,
+        @Part("_method") method: RequestBody,
+        @Part("currentPassword") currentPassword: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("password_confirmation") passwordConfirmation: RequestBody
+    ): Flowable<BaseMessageModel>
+
 }

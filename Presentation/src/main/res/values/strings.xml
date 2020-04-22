@@ -43,6 +43,10 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <string name="Please_enter_your_old_password">Please enter your old password</string>
+    <string name="Please_enter_your_the_new_password">Please enter the new password</string>
+    <string name="Please_confirm_the_new_password">Please confirm the new password</string>
+    <string name="this_fields_must_be_the_same">this field is different</string>
     <string name="Please_enter_fullname">Please enter full name</string>
     <string name="Please_enter_valid_email">Please enter valid email</string>
     <string name="Please_enter_mobile">Please enter valid phone</string>

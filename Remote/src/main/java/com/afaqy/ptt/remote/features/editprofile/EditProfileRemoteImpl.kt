@@ -47,4 +47,17 @@ class EditProfileRemoteImpl @Inject constructor(
             }
     }
 
+    override fun editProfile(
+        authorization: String,
+        method: RequestBody,
+        currentPassword: RequestBody,
+        password: RequestBody,
+        passwordConfirmation: RequestBody
+    ): Flowable<BaseEntity> {
+        return service.editProfile(authorization,method,currentPassword,password, passwordConfirmation)
+            .map {
+                mapper.mapFromModel(BaseMessageModel(it.message))
+            }
+    }
+
 }

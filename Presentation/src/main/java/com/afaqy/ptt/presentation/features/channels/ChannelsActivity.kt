@@ -76,7 +76,7 @@ class ChannelsActivity : BaseActivity() {
         client.start()
         stopService(Intent(applicationContext, AudioStreamingService::class.java))
         startForegroundService(Intent(applicationContext, AudioStreamingService::class.java))
-
+/*
         ivMic.setOnTouchListener { view, motionEvent ->
             if (checkForMicPermission()) {
                 val action = motionEvent.actionMasked
@@ -89,7 +89,7 @@ class ChannelsActivity : BaseActivity() {
                 }
             }
             return@setOnTouchListener false
-        }
+        }*/
 
         ibProfile.setOnClickListener {
             startActivityForResult(ProfileActivity.getStartIntent(this),LOGOUT_REQUEST_CODE)

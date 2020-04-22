@@ -30,8 +30,8 @@ private String imei;
             bufferSize = SAMPLE_RATE * 2;
         }
 
-        PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE,AudioFormat.CHANNEL_IN_MONO,bufferSize);
         try {
+            PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE,AudioFormat.CHANNEL_IN_MONO,bufferSize);
             final OutputStream outputStream = SocketHandler.getSocket().getOutputStream();
 
             final byte[] audioBuffer = new byte[bufferSize];
@@ -70,7 +70,7 @@ private String imei;
             record.release();
 //            outputStream.close();
             Log.e("AUDIO", "Streaming stopped");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

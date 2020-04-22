@@ -41,4 +41,15 @@ open class EditProfileRemoteDataStore @Inject constructor(
         return profileRemote.editProfile(authorization,method,name, email, ssn, countryCode, mobile, address)
     }
 
+
+    override fun editProfile(
+        authorization: String,
+        method: RequestBody,
+        currentPassword: RequestBody,
+        password: RequestBody,
+        passwordConfirmation: RequestBody
+    ): Flowable<BaseEntity> {
+        return profileRemote.editProfile(authorization,method,currentPassword,password, passwordConfirmation)
+    }
+
 }

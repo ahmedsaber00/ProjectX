@@ -47,4 +47,9 @@
     <string name="Please_enter_address">برجاء ادخال العنوان</string>
     <string name="invalid_username_or_password">اسم المستخدم او كلمة السر غير صحيح</string>
 
+    <string name="Please_enter_your_old_password">برجاء ادخال كلمة المرور القديمة</string>
+    <string name="Please_enter_your_the_new_password">برجاء ادخال كلمة المرور الجديدة</string>
+    <string name="Please_confirm_the_new_password">برجاء تاكيد كلمة المرور الجديدة</string>
+    <string name="this_fields_must_be_the_same">تاكيد كلمة المرور مختلف</string>
+
 </resources>

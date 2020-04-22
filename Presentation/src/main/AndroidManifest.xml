@@ -53,6 +53,7 @@
         <activity
             android:name="com.afaqy.ptt.presentation.features.restaurants.RestaurantsActivity"
             android:label="@string/app_name" />
+        <activity android:name=".features.editpassword.EditPasswordActivity" />
     </application>
 
 </manifest>

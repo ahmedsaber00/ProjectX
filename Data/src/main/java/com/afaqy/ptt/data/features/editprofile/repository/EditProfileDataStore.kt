@@ -30,4 +30,12 @@ interface EditProfileDataStore {
         address: RequestBody
     ): Flowable<BaseEntity>
 
+    fun editProfile(
+        authorization: String,
+        method: RequestBody,
+        currentPassword: RequestBody,
+        password: RequestBody,
+        passwordConfirmation: RequestBody
+    ): Flowable<BaseEntity>
+
 }

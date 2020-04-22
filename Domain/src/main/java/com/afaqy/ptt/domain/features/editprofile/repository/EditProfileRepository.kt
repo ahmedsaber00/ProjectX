@@ -30,4 +30,13 @@ interface EditProfileRepository {
         address: RequestBody
     ): Observable<BaseMessageModel>
 
+
+    fun editProfile(
+        authorization: String,
+        method: RequestBody,
+        currentPassword: RequestBody,
+        password: RequestBody,
+        passwordConfirmation: RequestBody
+    ): Observable<BaseMessageModel>
+
 }

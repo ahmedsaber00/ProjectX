@@ -174,8 +174,6 @@
             android:paddingTop="2dp"
             android:text="aaaaaaaa"
             android:textAlignment="viewStart"
-
-
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -185,7 +183,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:clickable="false"
         android:text="@string/change_password"
         android:textColor="@color/colorAccent"
         android:textSize="10sp"
@@ -297,7 +294,6 @@
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:hint="@string/address"
-            android:imeOptions="actionNext"
             android:inputType="textPostalAddress"
             android:maxLines="1"
             android:paddingTop="2dp"

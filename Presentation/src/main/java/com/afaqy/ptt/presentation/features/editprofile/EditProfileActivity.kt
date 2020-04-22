@@ -74,6 +74,8 @@ class EditProfileActivity : AppCompatActivity() {
         profile_layout_password.setOnClickListener {
             startActivity(EditPasswordActivity.getStartIntent(this))
         }
+        tvChangePassword.setOnClickListener { profile_layout_password.performClick() }
+        profile_et_password.setOnClickListener { profile_layout_password.performClick() }
         ivEdit.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED

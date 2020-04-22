@@ -6,6 +6,7 @@ import com.afaqy.ptt.presentation.di.module.viewmodel.*
 import com.afaqy.ptt.presentation.features.bookmarked.BookmarkedActivity
 import com.afaqy.ptt.presentation.features.browse.BrowseActivity
 import com.afaqy.ptt.presentation.features.channels.ChannelsActivity
+import com.afaqy.ptt.presentation.features.editpassword.EditPasswordActivity
 import com.afaqy.ptt.presentation.features.editprofile.EditProfileActivity
 import com.afaqy.ptt.presentation.features.profile.ProfileActivity
 import com.afaqy.ptt.presentation.features.restaurants.RestaurantsActivity
@@ -30,5 +31,8 @@ abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(modules = [EditProfileViewModelModule::class])
     abstract fun contributesEditProfileActivity(): EditProfileActivity
+
+    @ContributesAndroidInjector(modules = [EditPasswordViewModelModule::class])
+    abstract fun contributesEditPasswordActivity(): EditPasswordActivity
 
 }

@@ -3,13 +3,15 @@ package com.afaqy.ptt.presentation.features.channels;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.media.audiofx.AcousticEchoCanceler;
+import android.media.audiofx.NoiseSuppressor;
 import android.util.Log;
-
 import com.afaqy.ptt.codec.PTTMessageEncoder;
 import com.afaqy.ptt.models.PTTMessageType;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
 
 public class MicRecorder implements Runnable {
     private static final int SAMPLE_RATE = 16000;
@@ -25,15 +27,15 @@ private String imei;
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT);
 
-        Log.e("AUDIO", "buffersize = "+bufferSize);
+        Log.e("AUDIO", "buffersize = " + bufferSize);
         if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
             bufferSize = SAMPLE_RATE * 2;
         }
-
-        PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE,AudioFormat.CHANNEL_IN_MONO,bufferSize);
+        SocketChannel socketChannel = SocketHandler.getSocketChannel();
+        PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, bufferSize);
         try {
-            final OutputStream outputStream = SocketHandler.getSocket().getOutputStream();
-
+            //    final OutputStream outputStream = SocketHandler.getSocket().getOutputStream();
+            ByteBuffer audioStreamBuffer = ByteBuffer.allocateDirect(1024);
             final byte[] audioBuffer = new byte[bufferSize];
 
             AudioRecord record = new AudioRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION,
@@ -47,16 +49,23 @@ private String imei;
                 return;
             }
             record.startRecording();
+
+            enableAEC(record.getAudioSessionId());
+            enableNS(record.getAudioSessionId());
+
             Log.e("AUDIO", "STARTED RECORDING");
-            byte[] encodedMessage = pttMessageEncoder.encodePTTMessage(imei,imei,channelsId,audioBuffer, PTTMessageType.VOICE);
-            while(keepRecording) {
-             //   int numberOfBytes = record.read(audioBuffer, 0, audioBuffer.length);
+
+            while (keepRecording) {
                 Runnable writeToOutputStream = new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            outputStream.write(encodedMessage);
-                            outputStream.flush();
+                            record.read(audioBuffer, 0, audioBuffer.length);
+                            byte[] encodedVoiceBytes = pttMessageEncoder.encodePTTMessage(imei, imei, channelsId, audioBuffer, PTTMessageType.VOICE);
+                            audioStreamBuffer.put(encodedVoiceBytes);
+                            audioStreamBuffer.flip();
+                            socketChannel.write(audioStreamBuffer);
+                            audioStreamBuffer.clear();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -68,10 +77,27 @@ private String imei;
 
             record.stop();
             record.release();
-//            outputStream.close();
+            pttMessageEncoder.finalize();
+
             Log.e("AUDIO", "Streaming stopped");
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    public static void enableNS(int sessionId) {
+        if (NoiseSuppressor.isAvailable()) {
+            NoiseSuppressor ns = NoiseSuppressor.create(sessionId);
+            if (ns != null) ns.setEnabled(true);
+        }
+    }
+
+    public static void enableAEC(int sessionId) {
+        if (AcousticEchoCanceler.isAvailable()) {
+            AcousticEchoCanceler aec = AcousticEchoCanceler.create(sessionId);
+            if (aec != null) aec.setEnabled(true);
         }
     }
 }

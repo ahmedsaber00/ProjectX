@@ -13,27 +13,22 @@ import android.media.AudioTrack;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-
 import com.afaqy.ptt.codec.PTTMessageDecoder;
 import com.afaqy.ptt.models.PTTMessage;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import java.nio.channels.SocketChannel;
-import java.util.List;
 
 public class AudioStreamingService extends Service {
-    private ByteBuffer buf = ByteBuffer.allocateDirect(1024 * 1024);
+    private ByteBuffer receivingBuffer = ByteBuffer.allocateDirect(1024 * 1024);
+
     private static final int SAMPLE_RATE = 16000;
     public boolean keepPlaying = true;
     private AudioTrack audioTrack;
-    byte[] buffer;
 
     @Override
     public void onCreate() {
@@ -77,8 +72,8 @@ public class AudioStreamingService extends Service {
 
                 audioTrack = new AudioTrack.Builder()
                         .setAudioAttributes(new AudioAttributes.Builder()
-                                .setUsage(AudioAttributes.USAGE_MEDIA)
-                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
+                                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                                 .build())
                         .setAudioFormat(new AudioFormat.Builder()
                                 .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
@@ -90,27 +85,21 @@ public class AudioStreamingService extends Service {
                 audioTrack.play();
 
                 Log.v("PLAY", "Audio streaming started");
-
-
-                int offset = 0;
-
                 try {
-                    Socket socket = SocketHandler.getSocket();
-                    SocketChannel chan = socket.getChannel();
+                    SocketChannel socketChannel = SocketHandler.getSocketChannel();
 
                     PTTMessageDecoder pttMessageDecoder = new PTTMessageDecoder(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, bufferSize);
                     int headerLengthSize = PTTMessageDecoder.getPTTMessageHeaderLengthSize();
                     byte[] sizeBytes = new byte[headerLengthSize];
-
-
+                    receivingBuffer.limit(0);
                     while (keepPlaying) {
-                        ensure(headerLengthSize, chan);
-                        buf.get(sizeBytes);
+                        readToByteBuffer(headerLengthSize, socketChannel);
+                        receivingBuffer.get(sizeBytes);
                         int pttMessageSize = pttMessageDecoder.getPTTMessageSize(sizeBytes);
                         if (pttMessageSize != -1) {
-                            ensure(pttMessageSize, chan);
+                            readToByteBuffer(pttMessageSize, socketChannel);
                             byte[] pttMessageBytes = new byte[pttMessageSize];
-                            buf.get(pttMessageBytes);
+                            receivingBuffer.get(pttMessageBytes);
                             byte[] pttWholeMessageBytes = new byte[headerLengthSize + pttMessageSize];
                             System.arraycopy(sizeBytes, 0, pttWholeMessageBytes, 0, headerLengthSize);
                             System.arraycopy(pttMessageBytes, 0, pttWholeMessageBytes, headerLengthSize, pttMessageSize);
@@ -121,10 +110,12 @@ public class AudioStreamingService extends Service {
                                 audioTrack.write(buffer, 0, buffer.length);
                             }
                         }
-                        buf.position(buf.position() + pttMessageSize);
                     }
-                    chan.close();
+                    audioTrack.pause();
+                    audioTrack.flush();
                     audioTrack.release();
+                    receivingBuffer.clear();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {
@@ -157,16 +148,16 @@ public class AudioStreamingService extends Service {
         startForeground(2, notification);
     }
 
-    private void ensure(int len, ByteChannel chan) throws IOException {
-        if (buf.remaining() < len) {
-            buf.compact();
-            buf.flip();
+    private void readToByteBuffer(int len, ByteChannel chan) throws IOException {
+        if (receivingBuffer.remaining() < len) {
+            receivingBuffer.compact();
+            receivingBuffer.flip();
             do {
-                buf.position(buf.limit());
-                buf.limit(buf.capacity());
-                chan.read(buf);
-                buf.flip();
-            } while (buf.remaining() < len);
+                receivingBuffer.position(receivingBuffer.limit());
+                receivingBuffer.limit(receivingBuffer.capacity());
+                chan.read(receivingBuffer);
+                receivingBuffer.flip();
+            } while (receivingBuffer.remaining() < len);
         }
     }
 

@@ -24,8 +24,7 @@ android {
         targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
         testInstrumentationRunner "com.afaqy.ptt.presentation.test.TestRunner"
 
-        versionCode rootProject.ext.app_version_code
-        versionName "1.0.0"
+
         setProperty("archivesBaseName",
                 "ProjectX_" + new Date().format("hhmm-dd-MM-yy")
                         + "_vn" + versionName + "_vc" + versionCode)
@@ -54,6 +53,8 @@ android {
             applicationId "com.afaqy.ptt"
             dimension "default"
             versionNameSuffix "-production"
+            versionCode rootProject.ext.app_version_code
+            versionName "1.0.0"
             // ConfigFields
             buildConfigField("String", "API_BASE_URL", "\"${production_api_base_url}\"")
         }
@@ -61,6 +62,8 @@ android {
             applicationId "com.afaqy.ptt"
             dimension "default"
             versionNameSuffix "-dev"
+            versionCode rootProject.ext.app_version_code
+            versionName "1.0.0"
             // ConfigFields
             buildConfigField("String", "API_BASE_URL", "\"${dev_api_base_url}\"")
         }
@@ -68,6 +71,8 @@ android {
             applicationId "com.afaqy.ptt"
             dimension "default"
             versionNameSuffix "-test"
+            versionCode rootProject.ext.app_version_code
+            versionName "1.0.1"
             // ConfigFields
             buildConfigField("String", "API_BASE_URL", "\"${quality_api_base_url}\"")
         }

@@ -8,19 +8,26 @@ import android.media.audiofx.NoiseSuppressor;
 import android.util.Log;
 import com.afaqy.ptt.codec.PTTMessageEncoder;
 import com.afaqy.ptt.models.PTTMessageType;
+import com.afaqy.ptt.presentation.base.PreferenceControl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class MicRecorder implements Runnable {
-    private static final int SAMPLE_RATE = 16000;
-    private static final int FRAME_SIZE = 160;
+    public static final int SAMPLE_RATE = 16000;
+    public static final int FRAME_SIZE = 160;
 
 
     public static volatile boolean keepRecording = true;
     public static volatile String[] channelsId;
     private String imei;
+    private String userCode;
+
+    public MicRecorder(String imei, String userCode) {
+        this.imei = imei;
+        this.userCode = userCode;
+    }
 
     @Override
     public void run() {
@@ -64,7 +71,8 @@ public class MicRecorder implements Runnable {
                     public void run() {
                         try {
                             record.read(audioBuffer, 0, audioBuffer.length);
-                            byte[] encodedVoiceBytes = pttMessageEncoder.encodePTTMessage(imei, imei, channelsId, audioBuffer, PTTMessageType.VOICE);
+                            byte[] encodedVoiceBytes = pttMessageEncoder.encodePTTMessage(imei,
+                                    userCode, channelsId, audioBuffer, PTTMessageType.VOICE);
                             audioStreamBuffer.put(encodedVoiceBytes);
                             audioStreamBuffer.flip();
                             socketChannel.write(audioStreamBuffer);

@@ -5,7 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -16,7 +18,8 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.AndroidInjection
+import com.afaqy.ptt.codec.PTTMessageEncoder
+import com.afaqy.ptt.models.PTTMessageType
 import com.afaqy.ptt.presentation.R
 import com.afaqy.ptt.presentation.base.BaseActivity
 import com.afaqy.ptt.presentation.base.PreferenceControl
@@ -26,14 +29,13 @@ import com.afaqy.ptt.presentation.base.state.ResourceState
 import com.afaqy.ptt.presentation.di.ViewModelProviderFactory
 import com.afaqy.ptt.presentation.features.login.LoginActivity
 import com.afaqy.ptt.presentation.features.profile.ProfileActivity
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.net.InetSocketAddress
-import java.net.ServerSocket
-import java.net.Socket
+import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class ChannelsActivity : BaseActivity() {
 
@@ -43,7 +45,7 @@ class ChannelsActivity : BaseActivity() {
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     private lateinit var channelsViewModel: ChannelsViewModel
 
-    private var stringBuilder :StringBuilder = StringBuilder("");
+    private var stringBuilder: StringBuilder = StringBuilder("");
 
     private var channelsList: MutableList<ChannelsView> = mutableListOf()
     private var isTalking: Boolean = false
@@ -51,8 +53,11 @@ class ChannelsActivity : BaseActivity() {
     @Volatile
     private var selectedChannelsId: ArrayList<String> = ArrayList()
     var t: Thread? = null
-
+    lateinit var telMgr: TelephonyManager
+    private lateinit var imei: String
+    private lateinit var userCode: String
     private val LOGOUT_REQUEST_CODE: Int = 100
+
     companion object {
         fun getStartIntent(context: Context): Intent {
             return Intent(context, ChannelsActivity::class.java)
@@ -73,11 +78,10 @@ class ChannelsActivity : BaseActivity() {
 
         channelsViewModel.fetchChannels(PreferenceControl.loadToken(this), 0)
 
-        var client = ClientClass()
+        var client = ClientClass(imei, userCode)
         client.start()
         stopService(Intent(applicationContext, AudioStreamingService::class.java))
         startForegroundService(Intent(applicationContext, AudioStreamingService::class.java))
-/*
         ivMic.setOnTouchListener { view, motionEvent ->
             if (checkForMicPermission()) {
                 val action = motionEvent.actionMasked
@@ -90,15 +94,38 @@ class ChannelsActivity : BaseActivity() {
                 }
             }
             return@setOnTouchListener false
-        }*/
+        }
 
         ibProfile.setOnClickListener {
-            startActivityForResult(ProfileActivity.getStartIntent(this),LOGOUT_REQUEST_CODE)
+            startActivityForResult(ProfileActivity.getStartIntent(this), LOGOUT_REQUEST_CODE)
         }
-        etSearch.doOnTextChanged{ text, start, count, after ->
+        etSearch.doOnTextChanged { text, start, count, after ->
             getSearchedList(text.toString())
         }
         checkForMicPermission()
+        telMgr = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            // We do not have this permission. Let's ask the user
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_PHONE_STATE),
+                100
+            )
+
+        } else {
+            if (Build.VERSION.SDK_INT >= 26) {
+                if (telMgr.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA) {
+                    imei = telMgr.getMeid();
+                } else if (telMgr.getPhoneType() == TelephonyManager.PHONE_TYPE_GSM) {
+                    imei = telMgr.getImei(0);
+                } else {
+                    imei = "" // default!!!
+                }
+            }
+        }
+        userCode = PreferenceControl.loadToken(this)
     }
 
     private fun setupBrowseRecycler() {
@@ -124,7 +151,7 @@ class ChannelsActivity : BaseActivity() {
                     PreferenceControl.saveToken(this, "")
                     finish()
                     startActivity(LoginActivity.getStartIntent(this))
-                }else{
+                } else {
                     Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
                 }
 
@@ -144,7 +171,7 @@ class ChannelsActivity : BaseActivity() {
         }
     }
 
-    private fun getSearchedList(searchedText:String) {
+    private fun getSearchedList(searchedText: String) {
         channelsList?.let {
             var tempChannelsList: MutableList<ChannelsView> = mutableListOf()
             for (i in 0..channelsList.size - 1) {
@@ -161,7 +188,7 @@ class ChannelsActivity : BaseActivity() {
             isTalking = true
             if (micRecorder == null)
                 micRecorder =
-                    MicRecorder()
+                    MicRecorder(imei, userCode)
             t = Thread(micRecorder)
             if (micRecorder != null) {
                 MicRecorder.keepRecording = true
@@ -192,14 +219,17 @@ class ChannelsActivity : BaseActivity() {
             } else {
                 var channelName = channelsAdapter.channels[channelPosition].name
                 var index = stringBuilder.indexOf(channelName)
-                if (index!=-1)
-                    stringBuilder.delete(index,index+channelName.length)
+                if (index != -1)
+                    stringBuilder.delete(index, index + channelName.length)
                 if (stringBuilder.contains(" /  / "))
-                    stringBuilder.delete(stringBuilder.indexOf(" /  / "),stringBuilder.indexOf(" /  / ")+3)
+                    stringBuilder.delete(
+                        stringBuilder.indexOf(" /  / "),
+                        stringBuilder.indexOf(" /  / ") + 3
+                    )
                 if (stringBuilder.endsWith(" / "))
-                    stringBuilder.delete(stringBuilder.length-3,stringBuilder.length)
+                    stringBuilder.delete(stringBuilder.length - 3, stringBuilder.length)
                 if (stringBuilder.startsWith(" / "))
-                    stringBuilder.delete(0,3)
+                    stringBuilder.delete(0, 3)
                 selectedChannelsId.remove(channelsAdapter.channels[channelPosition].code)
             }
             tvSelectedChannels.setText(stringBuilder)
@@ -207,6 +237,7 @@ class ChannelsActivity : BaseActivity() {
             selectedChannelsId.toArray(MicRecorder.channelsId)
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
         if (micRecorder != null) {
@@ -236,7 +267,7 @@ class ChannelsActivity : BaseActivity() {
         if (event.keyCode == 1015 && !isTalking) { // stream audio
             if (micRecorder == null)
                 micRecorder =
-                    MicRecorder()
+                    MicRecorder(imei, userCode)
             t = Thread(micRecorder)
             if (micRecorder != null) {
 
@@ -249,27 +280,41 @@ class ChannelsActivity : BaseActivity() {
         return true
     }
 
-
-    class ClientClass internal constructor() : Thread() {
-
+    class ClientClass internal constructor(imei: String, userCode: String) : Thread() {
+        var clientImei = imei
+        var clientuserCode = userCode
         override fun run() {
             try {
-                var socketChannel = SocketChannel.open();
-                    socketChannel.connect(
+                var socketChannel = SocketChannel.open()
+                socketChannel.connect(
                     InetSocketAddress(
                         "212.70.49.194",
                         12050//port
                     )
                 )
                 SocketHandler.setSocket(socketChannel)
+
+                var pttMessageEncoder =
+                    PTTMessageEncoder(MicRecorder.SAMPLE_RATE, 1, MicRecorder.FRAME_SIZE)
+                val encodedVoiceBytes = pttMessageEncoder.encodePTTMessage(
+                    clientImei,
+                    clientuserCode,
+                    MicRecorder.channelsId,
+                    null,
+                    PTTMessageType.CONNECT
+                )
+                //    final OutputStream outputStream = SocketHandler.getSocket().getOutputStream();
+                val audioStreamBuffer =
+                    ByteBuffer.allocateDirect(1024)
+                audioStreamBuffer.put(encodedVoiceBytes)
+                audioStreamBuffer.flip()
+                socketChannel.write(audioStreamBuffer)
+                audioStreamBuffer.clear()
                 // startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
             } catch (e: IOException) {
                 e.printStackTrace()
-                ClientClass().start()
             }
         }
-
-
     }
 
     override fun onPause() {
@@ -299,8 +344,8 @@ class ChannelsActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-            if (requestCode==LOGOUT_REQUEST_CODE&&resultCode == Activity.RESULT_OK) {
-                recreate()
-            }
+        if (requestCode == LOGOUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            recreate()
+        }
     }
 }

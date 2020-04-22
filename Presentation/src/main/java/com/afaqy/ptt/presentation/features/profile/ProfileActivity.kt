@@ -15,6 +15,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.afaqy.ptt.codec.PTTMessageEncoder
+import com.afaqy.ptt.models.PTTMessageType
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
@@ -28,9 +30,16 @@ import com.afaqy.ptt.presentation.base.state.Resource
 import com.afaqy.ptt.presentation.base.state.ResourceState
 import com.afaqy.ptt.presentation.di.ViewModelProviderFactory
 import com.afaqy.ptt.presentation.features.channels.AudioStreamingService
+import com.afaqy.ptt.presentation.features.channels.ChannelsActivity
+import com.afaqy.ptt.presentation.features.channels.MicRecorder
+import com.afaqy.ptt.presentation.features.channels.SocketHandler
 import com.afaqy.ptt.presentation.features.editprofile.EditProfileActivity
 import com.afaqy.ptt.presentation.features.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_profile.*
+import java.io.IOException
+import java.net.InetSocketAddress
+import java.nio.ByteBuffer
+import java.nio.channels.SocketChannel
 import javax.inject.Inject
 
 class ProfileActivity : BaseActivity() {
@@ -38,11 +47,12 @@ class ProfileActivity : BaseActivity() {
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     private lateinit var profileViewModel: ProfileViewModel
-    lateinit var telMgr: TelephonyManager
     var deviceId = ""
     var simSerial = ""
     var profileView: ProfileView? = null
     private val UPDATE_PROFILE_REQUEST_CODE: Int = 200
+    private lateinit var telMgr: TelephonyManager
+    private lateinit var userCode: String
 
     companion object {
         fun getStartIntent(context: Context): Intent {
@@ -114,6 +124,7 @@ class ProfileActivity : BaseActivity() {
             }
         }
         ivBack.setOnClickListener { onBackPressed() }
+        userCode = PreferenceControl.loadToken(this)
     }
 
     private fun changeLanguage() {
@@ -150,6 +161,8 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun logoutAndGoToLoginScreen(messageView: BaseMessageView?) {
+        var client = ClientClass(deviceId, userCode)
+        client.start()
         progressView.visibility = View.GONE
         Toast.makeText(this, messageView?.message, Toast.LENGTH_LONG).show()
         stopService(Intent(applicationContext, AudioStreamingService::class.java))
@@ -238,6 +251,44 @@ class ProfileActivity : BaseActivity() {
             profileViewModel.fetchProfile(
                 PreferenceControl.loadToken(this)
             )
+        }
+    }
+
+
+    class ClientClass internal constructor(imei: String, userCode: String) : Thread() {
+        var clientImei = imei
+        var clientuserCode = userCode
+        override fun run() {
+            try {
+                var socketChannel = SocketChannel.open()
+                socketChannel.connect(
+                    InetSocketAddress(
+                        "212.70.49.194",
+                        12050//port
+                    )
+                )
+                SocketHandler.setSocket(socketChannel)
+
+                var pttMessageEncoder =
+                    PTTMessageEncoder(MicRecorder.SAMPLE_RATE, 1, MicRecorder.FRAME_SIZE)
+                val encodedVoiceBytes = pttMessageEncoder.encodePTTMessage(
+                    clientImei,
+                    clientuserCode,
+                    MicRecorder.channelsId,
+                    null,
+                    PTTMessageType.DISCONNECT
+                )
+                //    final OutputStream outputStream = SocketHandler.getSocket().getOutputStream();
+                val audioStreamBuffer =
+                    ByteBuffer.allocateDirect(1024)
+                audioStreamBuffer.put(encodedVoiceBytes)
+                audioStreamBuffer.flip()
+                socketChannel.write(audioStreamBuffer)
+                audioStreamBuffer.clear()
+                // startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
 }

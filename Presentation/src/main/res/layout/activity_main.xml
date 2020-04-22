@@ -112,6 +112,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/blueConst" />
 
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etPort"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="12050"
+        android:hint="port"
+        android:textColor="#000"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/etHost"
+        app:layout_constraintTop_toBottomOf="@+id/tvSelectedChannels" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etHost"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="212.70.49.194"
+        android:hint="host"
+        android:textColor="#000"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSelectedChannels" />
+
     <com.skyfishjy.library.RippleBackground
         android:id="@+id/rippleBackground"
         android:layout_width="match_parent"

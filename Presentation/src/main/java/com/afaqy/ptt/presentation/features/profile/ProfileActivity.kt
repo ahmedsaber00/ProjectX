@@ -76,6 +76,9 @@ class ProfileActivity : BaseActivity() {
             PreferenceControl.loadToken(this)
         )
 
+        profileViewModel.getLogout().observe(this,
+            Observer<Resource<BaseMessageView>> { it?.let { handleLogout(it) } })
+
         ibEditProfile.setOnClickListener {
             if (profileView != null)
                 startActivityForResult(
@@ -91,9 +94,6 @@ class ProfileActivity : BaseActivity() {
         }
 
         tvLogout.setOnClickListener {
-
-            profileViewModel.getLogout().observe(this,
-                Observer<Resource<BaseMessageView>> { it?.let { handleLogout(it) } })
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED

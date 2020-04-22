@@ -31,7 +31,7 @@ import com.afaqy.ptt.presentation.features.login.LoginActivity
 import com.afaqy.ptt.presentation.features.profile.ProfileActivity
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.IOException
+import java.lang.Exception
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -56,7 +56,10 @@ class ChannelsActivity : BaseActivity() {
     lateinit var telMgr: TelephonyManager
     private lateinit var imei: String
     private lateinit var userCode: String
+    private lateinit var host: String
+    private lateinit var port: String
     private val LOGOUT_REQUEST_CODE: Int = 100
+    private var isConnected: Boolean = false
 
     companion object {
         fun getStartIntent(context: Context): Intent {
@@ -78,31 +81,6 @@ class ChannelsActivity : BaseActivity() {
 
         channelsViewModel.fetchChannels(PreferenceControl.loadToken(this), 0)
 
-        var client = ClientClass(imei, userCode)
-        client.start()
-        stopService(Intent(applicationContext, AudioStreamingService::class.java))
-        startForegroundService(Intent(applicationContext, AudioStreamingService::class.java))
-        ivMic.setOnTouchListener { view, motionEvent ->
-            if (checkForMicPermission()) {
-                val action = motionEvent.actionMasked
-                when (action) {
-                    MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP -> {
-                        pushToTalk()
-                        return@setOnTouchListener true
-                    }
-                    else -> return@setOnTouchListener false
-                }
-            }
-            return@setOnTouchListener false
-        }
-
-        ibProfile.setOnClickListener {
-            startActivityForResult(ProfileActivity.getStartIntent(this), LOGOUT_REQUEST_CODE)
-        }
-        etSearch.doOnTextChanged { text, start, count, after ->
-            getSearchedList(text.toString())
-        }
-        checkForMicPermission()
         telMgr = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
             != PackageManager.PERMISSION_GRANTED
@@ -126,6 +104,41 @@ class ChannelsActivity : BaseActivity() {
             }
         }
         userCode = PreferenceControl.loadToken(this)
+        stopService(Intent(applicationContext, AudioStreamingService::class.java))
+        startForegroundService(Intent(applicationContext, AudioStreamingService::class.java))
+        ivMic.setOnClickListener {
+            host = etHost.text.toString()
+            port = etPort.text.toString()
+            var client = ClientClass(imei, userCode,host, port)
+            client.start()
+            isConnected = true
+        }
+
+        ivMic.setOnTouchListener { view, motionEvent ->
+            if (isConnected) {
+                if (checkForMicPermission()) {
+                    val action = motionEvent.actionMasked
+                    when (action) {
+                        MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP -> {
+                            pushToTalk()
+                            return@setOnTouchListener true
+                        }
+                        else -> return@setOnTouchListener false
+                    }
+                }
+                return@setOnTouchListener false
+            }else{
+                return@setOnTouchListener false
+            }
+        }
+
+        ibProfile.setOnClickListener {
+            startActivityForResult(ProfileActivity.getStartIntent(this), LOGOUT_REQUEST_CODE)
+        }
+        etSearch.doOnTextChanged { text, start, count, after ->
+            getSearchedList(text.toString())
+        }
+        checkForMicPermission()
     }
 
     private fun setupBrowseRecycler() {
@@ -280,16 +293,18 @@ class ChannelsActivity : BaseActivity() {
         return true
     }
 
-    class ClientClass internal constructor(imei: String, userCode: String) : Thread() {
+    class ClientClass internal constructor(imei: String, userCode: String,host: String, port: String) : Thread() {
         var clientImei = imei
         var clientuserCode = userCode
+        var clientHost = host
+        var clientPort = port
         override fun run() {
             try {
                 var socketChannel = SocketChannel.open()
                 socketChannel.connect(
                     InetSocketAddress(
-                        "212.70.49.194",
-                        12050//port
+                        clientHost,
+                        clientPort.toInt() as Int
                     )
                 )
                 SocketHandler.setSocket(socketChannel)
@@ -311,7 +326,9 @@ class ChannelsActivity : BaseActivity() {
                 socketChannel.write(audioStreamBuffer)
                 audioStreamBuffer.clear()
                 // startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
-            } catch (e: IOException) {
+            } catch (e: java.lang.UnsatisfiedLinkError) {
+                e.printStackTrace()
+            }catch (e: Exception) {
                 e.printStackTrace()
             }
         }

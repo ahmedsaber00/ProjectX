@@ -41,9 +41,10 @@ public class MicRecorder implements Runnable {
         if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
             bufferSize = SAMPLE_RATE * 2;
         }
-        SocketChannel socketChannel = SocketHandler.getSocketChannel();
-        PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE, 1, FRAME_SIZE);
         try {
+
+            SocketChannel socketChannel = SocketHandler.getSocketChannel();
+            PTTMessageEncoder pttMessageEncoder = new PTTMessageEncoder(SAMPLE_RATE, 1, FRAME_SIZE);
             //    final OutputStream outputStream = SocketHandler.getSocket().getOutputStream();
             ByteBuffer audioStreamBuffer = ByteBuffer.allocateDirect(1024);
             final byte[] audioBuffer = new byte[2*FRAME_SIZE];
@@ -92,6 +93,8 @@ public class MicRecorder implements Runnable {
 
             Log.e("AUDIO", "Streaming stopped");
         } catch (Exception e) {
+            e.printStackTrace();
+        }  catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
         } catch (Throwable throwable) {
             throwable.printStackTrace();

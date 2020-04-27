@@ -17,7 +17,10 @@ import com.afaqy.ptt.presentation.base.state.ResourceState
 import com.afaqy.ptt.presentation.di.ViewModelProviderFactory
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_edit_password.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import javax.inject.Inject
+
 
 class EditPasswordActivity : BaseActivity() {
 
@@ -42,28 +45,64 @@ class EditPasswordActivity : BaseActivity() {
 
         editPasswordViewModel.getEditProfile().observe(this,
             Observer<Resource<BaseMessageView>> { it?.let { handleDataState(it) } })
+        ivBack.setOnClickListener { onBackPressed() }
 
         buSubmit.setOnClickListener {
 
-            if (password_et_old_username.text.toString().trim().isEmpty()){
+            if (password_et_old_username.text.toString().trim().isEmpty()) {
                 password_layout_old.error = getString(R.string.Please_enter_your_old_password)
                 return@setOnClickListener
-            }
+            } else
+                password_layout_old.error = null
 
-            if (password_et_new.text.toString().trim().isEmpty()){
+
+            if (password_et_new.text.toString().trim().isEmpty()) {
                 password_layout_new.error = getString(R.string.Please_enter_your_the_new_password)
                 return@setOnClickListener
-            }
+            } else
+                password_layout_new.error = null
 
-            if (password_et_confirm_new.text.toString().trim().isEmpty()){
-                password_layout_confirm_new.error = getString(R.string.Please_confirm_the_new_password)
+            if (password_et_confirm_new.text.toString().trim().isEmpty()) {
+                password_layout_confirm_new.error =
+                    getString(R.string.Please_confirm_the_new_password)
                 return@setOnClickListener
-            }
+            } else
+                password_et_confirm_new.error = null
 
-            if (!password_et_confirm_new.text?.equals(password_et_new.text.toString())!!){
+            if (!password_et_confirm_new.text.toString()?.equals(password_et_new.text.toString())!!) {
                 password_layout_confirm_new.error = getString(R.string.this_fields_must_be_the_same)
                 return@setOnClickListener
+            } else
+                password_layout_confirm_new.error = null
+
+            val password = password_et_confirm_new.text.toString()
+
+            if (password.length>8||password.length<6) {
+                password_layout_new.error = getString(R.string.the_password_must_be_between_6_and_8_characters)
+                return@setOnClickListener
+            } else
+                password_layout_new.error = null
+
+            val small: Pattern = Pattern.compile("[a-z]", Pattern.CASE_INSENSITIVE)
+            val number: Pattern = Pattern.compile("[0-9]", Pattern.CASE_INSENSITIVE)
+            val capital: Pattern = Pattern.compile("[A-Z]", Pattern.CASE_INSENSITIVE)
+            val special: Pattern = Pattern.compile("[^A-Z0-9a-z]", Pattern.CASE_INSENSITIVE)
+            val matcherSmall: Matcher = small.matcher(password)
+            val matcherNumber: Matcher = number.matcher(password)
+            val matcherCapital: Matcher = capital.matcher(password)
+            val matcherSpecial: Matcher = special.matcher(password)
+
+            val constainsSmall: Boolean = matcherSmall.find()
+            val containsNumber: Boolean = matcherNumber.find()
+            val containsCapital: Boolean = matcherCapital.find()
+            val containsSpecial: Boolean = matcherSpecial.find()
+
+            if (!constainsSmall||!containsNumber||!containsCapital||!containsSpecial) {
+                password_layout_new.error = getString(R.string.the_password_must_be_between_6_and_8_characters)
+                password_layout_confirm_new.error = getString(R.string.the_password_must_be_between_6_and_8_characters)
+                return@setOnClickListener
             }
+
             editPasswordViewModel.fetchEditProfile(
                 PreferenceControl.loadToken(this),
                 createPartFromString("PUT"),

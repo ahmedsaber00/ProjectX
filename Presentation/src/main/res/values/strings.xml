@@ -14,10 +14,10 @@
     <string name="Please_enter_password">Please enter password</string>
     <string name="get_code">Get Code</string>
     <string name="edit_profile">Edit Profile</string>
-    <string name="email">Email</string>
+    <string name="email">Mail address</string>
     <string name="phone_no">Phone no.</string>
     <string name="change_password">Change Password</string>
-    <string name="old_password">Old Password</string>
+    <string name="old_password">Current Password</string>
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="submit">Submit</string>
@@ -46,12 +46,19 @@
     <string name="Please_enter_your_old_password">Please enter your old password</string>
     <string name="Please_enter_your_the_new_password">Please enter the new password</string>
     <string name="Please_confirm_the_new_password">Please confirm the new password</string>
-    <string name="this_fields_must_be_the_same">this field is different</string>
+    <string name="this_fields_must_be_the_same">Password confirmation does not match</string>
+    <string name="the_password_must_be_between_6_and_8_characters">The Password must be between 6 and 8 characters.\n
+At least one Special Character, Small letter &amp; Capital letter &amp; Number.</string>
     <string name="Please_enter_fullname">Please enter full name</string>
     <string name="Please_enter_valid_email">Please enter valid email</string>
     <string name="Please_enter_mobile">Please enter valid phone</string>
     <string name="Please_enter_ssn">Please enter SSN</string>
     <string name="Please_enter_address">Please enter address</string>
     <string name="invalid_username_or_password">Invalid username or password.</string>
+    <string name="are_you_sure_you_want_to_discard_all_changes_you_ve_made">your changes cannot be saved if you confirm to cancel</string>
+    <string name="cancel">Cancel</string>
+    <string name="cancel_changes">Cancel changes ?</string>
+
+    <string name="please_choose_smaller_image">Selected File is larger than 3 MB</string>
 
 </resources>

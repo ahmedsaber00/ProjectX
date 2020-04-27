@@ -72,7 +72,7 @@ android {
             dimension "default"
             versionNameSuffix "-test"
             versionCode rootProject.ext.app_version_code
-            versionName "1.0.1"
+            versionName "1.0.3"
             // ConfigFields
             buildConfigField("String", "API_BASE_URL", "\"${quality_api_base_url}\"")
         }
@@ -93,14 +93,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    packagingOptions {
+        exclude 'lwjgl32.dll.sha1'
+        exclude 'liblwjgl.so.sha1'
+        exclude 'liblwjgl.dylib.sha1'
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'libopus.dylib.sha1'
+        exclude 'lwjgl.dll.sha1'
+        exclude 'libopus.so.sha1'
+        exclude 'opus.dll.sha1'
+        exclude 'opus32.dll.sha1'
+    }
 }
 
 dependencies {
     def presentationDependencies = rootProject.ext.presentationDependencies
     def presentationTestDependencies = rootProject.ext.presentationTestDependencies
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation files('libs/pttcodec.jar')
 
     implementation project(':Domain')
     implementation project(':Data')
@@ -170,10 +178,13 @@ dependencies {
 
     //verification code
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.0'
-    implementation files('libs\\pttcodec.jar')
 
     implementation remoteDependencies.retrofit
     implementation remoteDependencies.retrofitConverter
     implementation remoteDependencies.retrofitAdapter
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
+    // implementation files('libs\\pttcodec.jar')
+    implementation 'com.afaqy.ptt.codec:afaqy-ptt-codec:0.0.3-SNAPSHOT'
+    //implementation 'com.github.martoreto:opuscodec:v1.2.1.2'
 }

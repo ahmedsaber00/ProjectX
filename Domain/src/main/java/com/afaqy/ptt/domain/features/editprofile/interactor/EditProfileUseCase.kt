@@ -18,10 +18,10 @@ open class EditProfileUseCase @Inject constructor(
         if (params == null) throw IllegalArgumentException("Params can't be null !!")
         if (params.photo!=null)
         return editProfileRepository.editProfile(params.authorization, params.method,params.name,params.email
-            ,params.ssn,params.countryCode,params.mobile,params.address,params.photo)
+            ,params.countryCode,params.mobile,params.address,params.photo)
         else
             return editProfileRepository.editProfile(params.authorization, params.method,params.name,params.email
-                ,params.ssn,params.countryCode,params.mobile,params.address)
+                ,params.countryCode,params.mobile,params.address)
 
     }
 
@@ -30,7 +30,6 @@ open class EditProfileUseCase @Inject constructor(
         val method: RequestBody,
         val name: RequestBody,
         val email: RequestBody,
-        val ssn: RequestBody,
         val countryCode: RequestBody,
         val mobile: RequestBody,
         val address: RequestBody,
@@ -41,23 +40,21 @@ open class EditProfileUseCase @Inject constructor(
                 method: RequestBody,
                 name: RequestBody,
                 email: RequestBody,
-                ssn: RequestBody,
                 countryCode: RequestBody,
                 mobile: RequestBody,
                 address: RequestBody,
                 photo: MultipartBody.Part): Params {
-                return Params(authorization, method, name, email, ssn, countryCode, mobile, address, photo)
+                return Params(authorization, method, name, email,  countryCode, mobile, address, photo)
             }
             fun forEditProfile(
                 authorization: String,
                 method: RequestBody,
                 name: RequestBody,
                 email: RequestBody,
-                ssn: RequestBody,
                 countryCode: RequestBody,
                 mobile: RequestBody,
                 address: RequestBody): Params {
-                return Params(authorization, method, name, email, ssn, countryCode, mobile, address)
+                return Params(authorization, method, name, email,  countryCode, mobile, address)
             }
         }
     }

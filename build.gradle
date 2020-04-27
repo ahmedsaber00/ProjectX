@@ -35,6 +35,13 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven {
+            url 'http://stageavl.afaqy.sa:12198/repository/maven-snapshots/'
+            credentials {
+                username "a.saber"
+                password "TYUghj"
+            }
+        }
     }
 }
 

@@ -51,5 +51,13 @@
     <string name="Please_enter_your_the_new_password">برجاء ادخال كلمة المرور الجديدة</string>
     <string name="Please_confirm_the_new_password">برجاء تاكيد كلمة المرور الجديدة</string>
     <string name="this_fields_must_be_the_same">تاكيد كلمة المرور مختلف</string>
+    <string name="are_you_sure_you_want_to_discard_all_changes_you_ve_made">Are you sure you want to discard all changes you\'ve made</string>
+
+    <string name="the_password_must_be_between_6_and_8_characters">The Password must be between 6 and 8 characters.\n
+At least one Special Character, Small letter &amp; Capital letter &amp; Number.</string>
+    <string name="cancel">Cancel</string>
+    <string name="cancel_changes">Cancel changes ?</string>
+
+    <string name="please_choose_smaller_image">الملف الذي تم اختيارة اكبر من 3 ميجا</string>
 
 </resources>

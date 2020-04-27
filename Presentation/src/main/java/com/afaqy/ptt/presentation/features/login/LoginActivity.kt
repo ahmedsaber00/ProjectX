@@ -55,7 +55,7 @@ class LoginActivity : BaseActivity() {
                 if (telMgr.getPhoneType() == TelephonyManager.PHONE_TYPE_CDMA) {
                     deviceId = telMgr.getMeid();
                 } else if (telMgr.getPhoneType() == TelephonyManager.PHONE_TYPE_GSM) {
-                    deviceId = telMgr.getImei(0);
+                    deviceId = telMgr.getImei();
                 } else {
                     deviceId = "" // default!!!
                 }

@@ -2,23 +2,23 @@ package com.afaqy.ptt.presentation.features.editprofile
 
 import android.Manifest
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.request.RequestOptions
-import dagger.android.AndroidInjection
 import com.afaqy.ptt.presentation.R
 import com.afaqy.ptt.presentation.base.PreferenceControl
 import com.afaqy.ptt.presentation.base.createPartFromString
@@ -31,6 +31,10 @@ import com.afaqy.ptt.presentation.di.ViewModelProviderFactory
 import com.afaqy.ptt.presentation.features.channels.AudioStreamingService
 import com.afaqy.ptt.presentation.features.editpassword.EditPasswordActivity
 import com.afaqy.ptt.presentation.features.login.LoginActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import okhttp3.MultipartBody
 import java.io.File
@@ -41,10 +45,14 @@ class EditProfileActivity : AppCompatActivity() {
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
     private lateinit var editProfileViewModel: EditProfileViewModel
     private var picturePath = ""
+    lateinit var dialog: Dialog
+    lateinit var buYes: Button
+    lateinit var buNo: Button
 
     private lateinit var profileView: ProfileView
     private var serverImage: MultipartBody.Part? = null
     private val SELECT_FILE = 2
+    private var isChanged = false
 
     companion object {
         fun getStartIntent(context: Context, profileView: ProfileView?): Intent {
@@ -64,15 +72,50 @@ class EditProfileActivity : AppCompatActivity() {
             Observer<Resource<BaseMessageView>> { it?.let { handleDataState(it) } })
 
         profileView = intent.getParcelableExtra<ProfileView>("profile")
-        profile_et_username.setText(profileView.name)
+        profile_et_fullname.setText(profileView.name)
         profile_et_email.setText(profileView.email)
         profile_et_phone.setText(profileView.mobile)
-        profile_et_ssn.setText(profileView.ssn)
         profile_et_address.setText(profileView.address)
-        ccp.setCountryForNameCode(profileView.countryCode)
+
+        dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.discard_dialog);
+        dialog.setCancelable(true)
+        buYes = dialog.findViewById(R.id.buYes)
+        buNo = dialog.findViewById(R.id.buNo)
+
+        var stringbuilder: StringBuilder? = profileView.countryCode?.let { StringBuilder(it) }
+
+        var plusIndex: Int = stringbuilder?.indexOf('+') ?: -1
+        if (plusIndex != -1)
+            stringbuilder?.deleteCharAt(plusIndex)
+        ccp.setCountryForPhoneCode(stringbuilder.toString().toInt())
         setRoundedImage(this, profileView.photo, ivProfile)
         profile_layout_password.setOnClickListener {
             startActivity(EditPasswordActivity.getStartIntent(this))
+        }
+
+        profile_et_phone.doAfterTextChanged {
+            profile_layout_phone.isHintEnabled = it?.length!! > 0
+            isChanged = true
+            profile_layout_phone.error = null
+        }
+
+        profile_et_address.doAfterTextChanged {
+            profile_layout_address.error = null
+            isChanged = true
+        }
+        profile_et_email.doAfterTextChanged {
+            profile_layout_email.error = null
+            isChanged = true
+        }
+        profile_et_fullname.doAfterTextChanged {
+            profile_layout_fullname.error = null
+            isChanged = true
+        }
+
+        ivBack.setOnClickListener {
+            onBackPressed()
         }
         tvChangePassword.setOnClickListener { profile_layout_password.performClick() }
         profile_et_password.setOnClickListener { profile_layout_password.performClick() }
@@ -92,40 +135,32 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
         buSubmit.setOnClickListener {
-            if (profile_et_username.text.toString().trim().isNotEmpty())
-                profileView.name = profile_et_username.text.toString()
-            else {
-                profile_layout_username.error = getString(R.string.Please_enter_fullname)
+            if (profile_et_fullname.text.toString().trim().isNotEmpty()) {
+                profileView.name = profile_et_fullname.text.toString()
+            }else {
+                profile_layout_fullname.error = getString(R.string.Please_enter_fullname)
                 return@setOnClickListener
             }
 
-            if (profile_et_email.text.toString().trim().isNotEmpty())
+            if (profile_et_email.text.toString().trim().isNotEmpty()) {
                 profileView.email = profile_et_email.text.toString()
-            else {
-                profile_layout_username.error = getString(R.string.Please_enter_valid_email)
+            } else {
+                profile_layout_email.error = getString(R.string.Please_enter_valid_email)
                 return@setOnClickListener
             }
 
-            if (profile_et_phone.text.toString().trim().isNotEmpty())
+            if (profile_et_phone.text.toString().trim().isNotEmpty()) {
                 profileView.mobile = profile_et_phone.text.toString()
-            else {
+
+            }else {
+                profile_layout_phone.isHintEnabled = true
                 profile_layout_phone.error = getString(R.string.Please_enter_mobile)
                 return@setOnClickListener
             }
 
-            if (profile_et_ssn.text.toString().trim().isNotEmpty())
-                profileView.ssn = profile_et_ssn.text.toString()
-            else {
-                profile_layout_ssn.error = getString(R.string.Please_enter_ssn)
-                return@setOnClickListener
-            }
+            profileView.address = profile_et_address.text.toString()
 
-            if (profile_et_address.text.toString().trim().isNotEmpty())
-                profileView.address = profile_et_address.text.toString()
-            else {
-                profile_layout_address.error = getString(R.string.Please_enter_address)
-                return@setOnClickListener
-            }
+            profileView.countryCode = ccp.selectedCountryCode
 
             if (picturePath.isNotEmpty()) {
                 val file = File(picturePath)
@@ -135,7 +170,6 @@ class EditProfileActivity : AppCompatActivity() {
                     createPartFromString("PUT"),
                     createPartFromString(profileView.name.toString()),
                     createPartFromString(profileView.email.toString()),
-                    createPartFromString(profileView.ssn.toString()),
                     createPartFromString(profileView.countryCode.toString()),
                     createPartFromString(profileView.mobile.toString()),
                     createPartFromString(profileView.address.toString()),
@@ -147,7 +181,6 @@ class EditProfileActivity : AppCompatActivity() {
                     createPartFromString("PUT"),
                     createPartFromString(profileView.name.toString()),
                     createPartFromString(profileView.email.toString()),
-                    createPartFromString(profileView.ssn.toString()),
                     createPartFromString(profileView.countryCode.toString()),
                     createPartFromString(profileView.mobile.toString()),
                     createPartFromString(profileView.address.toString())
@@ -168,6 +201,8 @@ class EditProfileActivity : AppCompatActivity() {
                 progressView.visibility = View.GONE
                 if (resource.message.equals("HTTP 401 Unauthorized")) {
                     logoutAndGoToLoginScreen(resource.message?.let { BaseMessageView(it) });
+                } else if (resource.message.equals("413 Payload Too Large")) {
+                    Toast.makeText(this, getString(R.string.please_choose_smaller_image), Toast.LENGTH_LONG).show()
                 } else
                     Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
             }
@@ -214,6 +249,7 @@ class EditProfileActivity : AppCompatActivity() {
                 picturePath = cursor.getString(columnIndex)
                 cursor.close()
                 setRoundedImage(this, picturePath, ivProfile)
+                isChanged = true
             }
         }
     }
@@ -242,4 +278,15 @@ class EditProfileActivity : AppCompatActivity() {
             .into(imageView!!)
     }
 
+    override fun onBackPressed() {
+        if (isChanged) {
+            buYes.setOnClickListener {
+                isChanged = false
+                onBackPressed()
+            }
+            buNo.setOnClickListener { dialog.dismiss() }
+            dialog.show()
+        } else
+            super.onBackPressed()
+    }
 }

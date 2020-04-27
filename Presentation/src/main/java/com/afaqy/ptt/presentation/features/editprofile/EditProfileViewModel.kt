@@ -38,7 +38,6 @@ class EditProfileViewModel @Inject constructor(
         method: RequestBody,
         name: RequestBody,
         email: RequestBody,
-        ssn: RequestBody,
         countryCode: RequestBody,
         mobile: RequestBody,
         address: RequestBody,
@@ -52,7 +51,6 @@ class EditProfileViewModel @Inject constructor(
                 method,
                 name,
                 email,
-                ssn,
                 countryCode,
                 mobile,
                 address,
@@ -66,7 +64,6 @@ class EditProfileViewModel @Inject constructor(
         method: RequestBody,
         name: RequestBody,
         email: RequestBody,
-        ssn: RequestBody,
         countryCode: RequestBody,
         mobile: RequestBody,
         address: RequestBody
@@ -79,7 +76,6 @@ class EditProfileViewModel @Inject constructor(
                 method,
                 name,
                 email,
-                ssn,
                 countryCode,
                 mobile,
                 address

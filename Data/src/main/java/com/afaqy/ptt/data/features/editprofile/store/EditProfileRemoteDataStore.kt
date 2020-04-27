@@ -19,13 +19,12 @@ open class EditProfileRemoteDataStore @Inject constructor(
         method: RequestBody,
         name: RequestBody,
         email: RequestBody,
-        ssn: RequestBody,
         countryCode: RequestBody,
         mobile: RequestBody,
         address: RequestBody,
         photo: MultipartBody.Part?
     ): Flowable<BaseEntity> {
-        return profileRemote.editProfile(authorization,method,name, email, ssn, countryCode, mobile, address, photo)
+        return profileRemote.editProfile(authorization,method,name, email, countryCode, mobile, address, photo)
     }
 
     override fun editProfile(
@@ -33,12 +32,11 @@ open class EditProfileRemoteDataStore @Inject constructor(
         method: RequestBody,
         name: RequestBody,
         email: RequestBody,
-        ssn: RequestBody,
         countryCode: RequestBody,
         mobile: RequestBody,
         address: RequestBody
     ): Flowable<BaseEntity> {
-        return profileRemote.editProfile(authorization,method,name, email, ssn, countryCode, mobile, address)
+        return profileRemote.editProfile(authorization,method,name, email, countryCode, mobile, address)
     }
 
 

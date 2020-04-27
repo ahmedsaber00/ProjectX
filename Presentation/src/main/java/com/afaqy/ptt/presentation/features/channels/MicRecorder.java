@@ -96,6 +96,8 @@ public class MicRecorder implements Runnable {
             e.printStackTrace();
         }  catch (UnsatisfiedLinkError e) {
             e.printStackTrace();
+        }catch ( NoClassDefFoundError e) {
+            e.printStackTrace();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

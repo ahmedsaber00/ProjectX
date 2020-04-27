@@ -37,6 +37,7 @@ import com.afaqy.ptt.presentation.features.editprofile.EditProfileActivity
 import com.afaqy.ptt.presentation.features.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_profile.*
 import java.io.IOException
+import java.lang.Exception
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -148,7 +149,7 @@ class ProfileActivity : BaseActivity() {
             }
             ResourceState.ERROR -> {
                 progressView.visibility = View.GONE
-                if (resource.message.equals("HTTP 401 Unauthorized")) {
+                if (resource.message.equals("401 Unauthorized")) {
                     PreferenceControl.saveToken(this, "")
                     finish()
                     startActivity(LoginActivity.getStartIntent(this))
@@ -183,7 +184,7 @@ class ProfileActivity : BaseActivity() {
             }
             ResourceState.ERROR -> {
                 progressView.visibility = View.GONE
-                if (resource.message.equals("HTTP 401 Unauthorized")) {
+                if (resource.message.equals("401 Unauthorized")) {
                     logoutAndGoToLoginScreen(resource.message?.let { BaseMessageView(it) });
                 }else{
                     Toast.makeText(this, resource.message, Toast.LENGTH_LONG).show()
@@ -197,7 +198,8 @@ class ProfileActivity : BaseActivity() {
         progressView.visibility = View.GONE
         this.profileView = profileView
         profileView?.let {
-            tvUserName.setText(profileView.name)
+            tvUserName.setText(profileView.username)
+            tvFullName.setText(profileView.name)
             tvEmail.setText(profileView.email)
             tvPhone.setText(profileView.countryCode.plus(profileView.mobile))
             tvSsn.setText(profileView.ssn)
@@ -286,7 +288,13 @@ class ProfileActivity : BaseActivity() {
                 socketChannel.write(audioStreamBuffer)
                 audioStreamBuffer.clear()
                 // startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
+            } catch (e: UnsatisfiedLinkError) {
+                e.printStackTrace()
+            }catch (e: NoClassDefFoundError) {
+                e.printStackTrace()
             } catch (e: IOException) {
+                e.printStackTrace()
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

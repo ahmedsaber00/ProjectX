@@ -110,8 +110,8 @@ class LoginFragment : DaggerFragment() {
                             deviceId = "" // default!!!
                         }
                     }
-                    // simSerial = telMgr.simSerialNumber
-                    simSerial = "123456789"
+                    simSerial = telMgr.simSerialNumber
+                    // simSerial = "1234567891011121314151617"
                     loginViewModel.fetchLogin(
                         login_et_username.text.toString(),
                         login_et_password.text.toString(), deviceId, simSerial

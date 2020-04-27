@@ -21,13 +21,12 @@ class EditProfileDataRepository @Inject constructor(
         method: RequestBody,
         name: RequestBody,
         email: RequestBody,
-        ssn: RequestBody,
         countryCode: RequestBody,
         mobile: RequestBody,
         address: RequestBody,
         photo: MultipartBody.Part?
     ): Observable<BaseMessageModel> {
-        return factory.getDataStore(false, true).editProfile(authorization,method,name, email, ssn, countryCode, mobile, address, photo)
+        return factory.getDataStore(false, true).editProfile(authorization,method,name, email, countryCode, mobile, address, photo)
             .toObservable().distinctUntilChanged()
             .map {
                 mapper.mapFromEntity(it)
@@ -39,12 +38,11 @@ class EditProfileDataRepository @Inject constructor(
         method: RequestBody,
         name: RequestBody,
         email: RequestBody,
-        ssn: RequestBody,
         countryCode: RequestBody,
         mobile: RequestBody,
         address: RequestBody
     ): Observable<BaseMessageModel> {
-        return factory.getDataStore(false, true).editProfile(authorization,method,name, email, ssn, countryCode, mobile, address)
+        return factory.getDataStore(false, true).editProfile(authorization,method,name, email, countryCode, mobile, address)
             .toObservable().distinctUntilChanged()
             .map {
                 mapper.mapFromEntity(it)

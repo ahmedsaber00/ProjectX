@@ -12,7 +12,6 @@ interface EditProfileRepository {
         method: RequestBody,
         name: RequestBody,
         email: RequestBody,
-        ssn: RequestBody,
         countryCode: RequestBody,
         mobile: RequestBody,
         address: RequestBody,
@@ -24,7 +23,6 @@ interface EditProfileRepository {
         method: RequestBody,
         name: RequestBody,
         email: RequestBody,
-        ssn: RequestBody,
         countryCode: RequestBody,
         mobile: RequestBody,
         address: RequestBody

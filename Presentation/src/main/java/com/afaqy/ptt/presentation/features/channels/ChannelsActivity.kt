@@ -308,7 +308,6 @@ class ChannelsActivity : BaseActivity() {
                     )
                 )
                 SocketHandler.setSocket(socketChannel)
-
                 var pttMessageEncoder =
                     PTTMessageEncoder(MicRecorder.SAMPLE_RATE, 1, MicRecorder.FRAME_SIZE)
                 val encodedVoiceBytes = pttMessageEncoder.encodePTTMessage(
@@ -328,7 +327,9 @@ class ChannelsActivity : BaseActivity() {
                 // startActivity(Intent(getApplicationContext(), ChatWindow::class.java))
             } catch (e: java.lang.UnsatisfiedLinkError) {
                 e.printStackTrace()
-            }catch (e: Exception) {
+            }catch (e: NoClassDefFoundError ) {
+                e.printStackTrace()
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
